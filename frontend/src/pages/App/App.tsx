@@ -1,9 +1,7 @@
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import React from 'react';
 
 import NotFound from '../NotFound/NotFound';
-
-import SearchPage from 'src/pages/SearchPage/SearchPage';
-import React from 'react';
 
 import SearchPage from 'src/pages/SearchPage/SearchPage';
 
