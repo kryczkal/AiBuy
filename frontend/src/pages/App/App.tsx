@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import NotFound from '../NotFound/NotFound';
 
 import SearchPage from 'src/pages/SearchPage/SearchPage';
+import React from 'react';
+
+import SearchPage from 'src/pages/SearchPage/SearchPage';
 
 const App = () => {
   return (
