@@ -1,0 +1,6 @@
+{
+  "project_id": "my-gcp-project-id",
+  "tfstate_bucket_url": "gs://my-terraform-state-bucket",
+  "credentials_file_path": "credentials.json",
+  "location": "europe-west1"
+}
