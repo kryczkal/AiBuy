@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
-import { CssBaseline, Container } from '@mui/material';
+
+import CenteredComponent from '../../components/SearchComponents/CenteredComponent';
+import FloatingComponent from '../../components/SearchComponents/FloatingComponent';
 
 import Header from 'src/components/SearchComponents/Header';
 import SearchForm from 'src/components/SearchComponents/SearchForm';
-import { API_ENDPOINTS } from 'src/api/apiConfig';
-import QuestionComponent from 'src/components/QuestionComponent/QuestionComponent';
 import SearchResultComponent from 'src/components/SearchResultComponent/SearchResultComponent';
 import FloatingComponents from 'src/components/SearchComponents/FloatingComponents';
 
-import './SearchPage.scss';
 
 const mockResults = [
-  <QuestionComponent key={1} />,
-  <SearchResultComponent key={2} />
+  <SearchResultComponent key={1} />,
+  <SearchResultComponent key={2} />,
 ];
 
 const SearchPage: React.FC = () => {
@@ -30,25 +29,22 @@ const SearchPage: React.FC = () => {
   };
 
   return (
-    <Container component="main" maxWidth="sm">
-      <CssBaseline />
-      <div
-        className={`centered-container ${isDisplayingComps ? 'floating-up' : ''}`}
-      >
-        <Header
-          title="AI Shopping Assistant"
-          description="Describe what you need, and we'll find the perfect solution"
-        />
-        <SearchForm
-          problem={problem}
-          onProblemChange={(e) => setProblem(e.target.value)}
-          onSubmit={handleSubmit}
-        />
-        {isDisplayingComps && (
-          <FloatingComponents components={components} animationKey={animationKey} />
-        )}
-      </div>
-    </Container>
+      <CenteredComponent>
+        <FloatingComponent floatUp={isDisplayingComps}>
+          <Header
+            title="AI Shopping Assistant"
+            description="Describe what you need, and we'll find the perfect solution"
+          />
+          <SearchForm
+            problem={problem}
+            onProblemChange={(e) => setProblem(e.target.value)}
+            onSubmit={handleSubmit}
+          />
+          {isDisplayingComps && (
+            <FloatingComponents components={components} animationKey={animationKey} />
+          )}
+        </FloatingComponent>
+      </CenteredComponent>
   );
 };
 
