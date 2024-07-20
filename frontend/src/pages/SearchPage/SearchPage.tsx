@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import {logger} from 'react-query/types/react/logger';
 
 import CenteredComponent from '../../components/SearchComponents/CenteredComponent';
 import FloatingComponent from '../../components/SearchComponents/FloatingComponent';
@@ -23,7 +22,7 @@ const SearchPage: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    logger.error('Submitted problem:', problem);
+    console.error('Submitted problem:', problem);
 
     setIsDisplayingComps(true);
     setAnimationKey(prevKey => prevKey + 1); // Change the key to re-trigger the animation
