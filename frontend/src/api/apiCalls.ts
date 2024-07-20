@@ -1,22 +1,23 @@
 import { API_ENDPOINTS } from './apiConfig';
 
-export async function validateSearchResult() : Promise<boolean> {
+interface ValidSearchPromptResponse {
+  status: string;
+}
+export async function validateSearchPrompt(prompt : string) : Promise<boolean> {
   try {
     const response = await fetch(API_ENDPOINTS.validateSearchResult, {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify({ prompt }),
     });
     if(!response.ok) {
       throw new Error('Failed to fetch results');
     }
-    const data = await response.json();
+    const data = await response.json() as ValidSearchPromptResponse;
 
-    // TODO: Handle the fetched data
-    console.log('Fetched data:', data);
-
-    return true;
+    return data.status === 'success';
   } catch (error) {
     if (error instanceof Error) {
       console.error(error.message);
