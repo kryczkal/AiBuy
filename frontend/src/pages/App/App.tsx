@@ -1,31 +1,35 @@
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import {Route, Routes, Navigate, BrowserRouter} from 'react-router-dom';
 import React from 'react';
 
 import NotFound from '../NotFound/NotFound';
 import QuestionComponentTest from '../TestPages/QuestionComponentTest';
 import ItemRecommendationBoxTest from '../TestPages/ItemRecommendationBoxTest';
+import Layout from '../Layout/Layout';
 
 import SearchPage from 'src/pages/SearchPage/SearchPage';
 import TestingPage from 'src/pages/Testing/TestingPage';
-import ItemRecommendation from 'src/components/ItemRecommendation/ItemRecommendation';
+// import ItemRecommendation from 'src/components/ItemRecommendation/ItemRecommendation';
 
 
 const App = () => {
   return (
     <div className='app'>
-      <Router>
+      <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Navigate to='/search' />} />
-          <Route path='/search' element={<SearchPage />} />
-          <Route path='*' element={<NotFound />} />
+          <Route element={<Layout/>}>
+            <Route path='/' element={<Navigate to='/search' />} />
+            <Route path='/search' element={<SearchPage />} />
+            <Route path='*' element={<NotFound />} />
 
-          // Test pages
+            // Test pages
 
-          <Route path='/testQuestionComp' element={<QuestionComponentTest/>}/>
-          <Route path='/testItemRecBox' element={<ItemRecommendationBoxTest/>}/>
-          <Route path='/testing' element={<TestingPage />} />
+            <Route path='/testQuestionComp' element={<QuestionComponentTest/>}/>
+            <Route path='/testItemRecBox' element={<ItemRecommendationBoxTest/>}/>
+            <Route path='/testing' element={<TestingPage />} />
+          </Route>
+
         </Routes>
-      </Router>
+      </BrowserRouter>
     </div>
   );
 };

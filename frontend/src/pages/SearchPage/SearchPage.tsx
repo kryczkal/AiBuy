@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
+import {logger} from 'react-query/types/react/logger';
 
 import CenteredComponent from '../../components/SearchComponents/CenteredComponent';
 import FloatingComponent from '../../components/SearchComponents/FloatingComponent';
 
-import Header from 'src/components/SearchComponents/Header';
-import SearchForm from 'src/components/SearchComponents/SearchForm';
+import SearchForm from 'src/components/SearchForm/SearchForm';
 import SearchResultComponent from 'src/components/SearchResultComponent/SearchResultComponent';
 import FloatingComponents from 'src/components/SearchComponents/FloatingComponents';
+import HeaderWrapper from 'src/components/HeaderWrapper/HeaderWrapper';
 
 
 const mockResults = [
@@ -22,7 +23,7 @@ const SearchPage: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Submitted problem:', problem);
+    logger.error('Submitted problem:', problem);
 
     setIsDisplayingComps(true);
     setAnimationKey(prevKey => prevKey + 1); // Change the key to re-trigger the animation
@@ -31,7 +32,7 @@ const SearchPage: React.FC = () => {
   return (
       <CenteredComponent>
         <FloatingComponent floatUp={isDisplayingComps}>
-          <Header
+          <HeaderWrapper
             title="AI Shopping Assistant"
             description="Describe what you need, and we'll find the perfect solution"
           />
