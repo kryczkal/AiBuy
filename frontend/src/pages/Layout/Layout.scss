@@ -1,0 +1,29 @@
+main {
+  grid-column: 2/3;
+  grid-row: 2/3;
+  height: 100%;
+}
+
+.sidebar {
+  background: #fff;
+  border-right: 1px solid #ddd;
+  grid-column: 1 / 2;
+  grid-row: 1/-1;
+  position: sticky;
+  z-index: 3;
+}
+
+.layout__header {
+  background: #fff;
+  display: flex;
+  grid-column: 2/4;
+  grid-row: 1/2;
+  justify-content: flex-end;
+  padding: 1.2rem;
+  position: sticky;
+  top: 0;
+  height: 7rem;
+  z-index: 3;
+
+
+}

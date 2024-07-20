@@ -1,0 +1,20 @@
+@keyframes floatIn {
+    0% {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.blocks {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.float-in {
+    animation: floatIn 0.5s ease-in-out;
+}
