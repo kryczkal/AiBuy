@@ -32,3 +32,11 @@ export async function getRecommendations(prompt : string) : Promise<ItemRecommen
     return [];
   }
 };
+
+interface ResearchStateMessage {
+  type: string; // 'url' | 'info' | 'error';
+  content: string;
+}
+
+export async function getResearchState() : Promise<ResearchStateMessage> {
+
