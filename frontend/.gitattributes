@@ -1,0 +1,7 @@
+* text eol=lf
+
+# setting true binary files to not be normalized
+*.png binary
+*.jpg binary
+*.ttf binary
+*.eot binary
