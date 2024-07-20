@@ -1,0 +1,21 @@
+from app.services.llm_service import LLMService
+from app.models.product import Product
+from typing import List, Dict
+
+class ProductService:
+    def __init__(self):
+        self.llm_service = LLMService()
+
+    async def process_query(self, query: str) -> Dict:
+        is_detailed = await self.llm_service.is_prompt_detailed_enough(query)
+        if not is_detailed:
+            questions = await self.llm_service.get_details_questions(query)
+            return {"status": "need_more_details", "questions": questions}
+        
+        solutions = await self.llm_service.get_solutions(query)
+        components = await self.llm_service.get_components()
+        return {"status": "success", "solutions": solutions, "components": components}
+
+    async def update_query(self, query: str, answers: List[str]) -> str:
+        updated_query = await self.llm_service.update_issue_details([query] + answers)
+        return updated_query
