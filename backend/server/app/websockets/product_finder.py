@@ -9,6 +9,7 @@ active_connections = {}
 
 @router.websocket("/ws/product-finder")
 async def product_finder_websocket(websocket: WebSocket):
+    # TODO: TEMP
     return
     # await websocket.accept()
     # session_id = str(uuid.uuid4())

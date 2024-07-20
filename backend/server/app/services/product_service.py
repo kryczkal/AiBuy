@@ -10,14 +10,20 @@ class ProductService:
         self.llm_service = LLMService(config_path)
 
     # Refer to issue #11 on GitHub
-    async def process_query(self, queryComponents: List[str]) -> Dict:
-        global_loger.info(f"Processing query: {' '.join(queryComponents)}")
+    async def process_query(self, prompt: str, questions: List[str], answers: List[str]) -> Dict:
+        if len(questions) != len(answers):
+            raise ValueError(
+                f"Length of questions and answers do not match. Answers: {len(answers)}, Questions: {len(questions)}")
 
-        if len(queryComponents) == 0:
-            raise ValueError("Received empty request")
-        else:
-            # If we received only the prompt skip the concatenation part
-            query = queryComponents[0] if len(queryComponents) == 1 else await self.update_query(queryComponents)
+        # Prepare log msg
+        tmp = [''] * (len(questions) + len(answers))
+        tmp[0::2] = questions
+        tmp[1::2] = answers
+        global_loger.info(f"Processing query with prompt: {prompt}. And questions/answers: {' '.join(tmp)}")
+
+        # If we received only the prompt skip the concatenation part
+        query = prompt if len(questions) == 0 else await self.llm_service.update_issue_details(prompt, questions,
+                                                                                               answers)
 
         is_detailed = await self.llm_service.is_prompt_detailed_enough(query)
         if not is_detailed:
@@ -29,15 +35,3 @@ class ProductService:
 
         global_loger.info(f"Sending response: {json.dumps(response)}")
         return response
-
-    async def update_query(self, queryComponents: List[str]) -> str:
-        base_query = queryComponents[0]
-
-        if (len(queryComponents) - 1) % 2 != 0:
-            raise ValueError("Received request has invalid number of question/answers elements")
-
-        question = queryComponents[1::2]
-        answers = queryComponents[2::2]
-
-        updated_query = await self.llm_service.update_issue_details(base_query, question, answers)
-        return updated_query

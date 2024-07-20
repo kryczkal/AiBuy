@@ -30,4 +30,4 @@ def get_product_service() -> ProductService:
 @router.post("/process-query")
 async def process_query(request: QueryRequest = Body(...),
                         product_service: ProductService = Depends(get_product_service)):
-    return await product_service.process_query(request.query)
+    return await product_service.process_query(request.basicPrompt, request.questions, request.answers)
