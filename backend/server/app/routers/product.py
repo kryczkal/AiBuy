@@ -14,6 +14,12 @@ class QueryRequest(BaseModel):
     answers: List[str]
 
 
+class QueryResponse(BaseModel):
+    status: str
+    components: List[Dict]
+    questions: List[str]
+
+
 class UpdateQueryRequest(BaseModel):
     query: str
     answers: List[str]
@@ -29,5 +35,5 @@ def get_product_service() -> ProductService:
 
 @router.post("/process-query")
 async def process_query(request: QueryRequest = Body(...),
-                        product_service: ProductService = Depends(get_product_service)):
+                        product_service: ProductService = Depends(get_product_service)) -> QueryResponse:
     return await product_service.process_query(request.basicPrompt, request.questions, request.answers)
