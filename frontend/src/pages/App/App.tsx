@@ -1,50 +1,30 @@
-import { Route, Routes, Navigate, BrowserRouter } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import React from 'react';
 
 import NotFound from '../NotFound/NotFound';
-import ItemRecommendationBox from '../../components/ItemRecommendationBoxComponent/ItemRecommendationBox';
-import Layout from '../Layout/Layout';
+import QuestionComponentTest from '../TestPages/QuestionComponentTest';
+import ItemRecommendationBoxTest from '../TestPages/ItemRecommendationBoxTest';
 
 import SearchPage from 'src/pages/SearchPage/SearchPage';
-import QuestionComponent from 'src/components/QuestionComponent/QuestionComponent';
+import ItemRecommendation from 'src/components/ItemRecommendation/ItemRecommendation';
 
-import './App.scss';
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<Navigate to="/search" />} />
-          <Route path="/search" element={<SearchPage />} />
-          <Route
-            // Pass pages in Route not the components
-            path="/testQuestionComp"
-            element={<QuestionComponent question="Test Question" onAnswerChange={(answer: string) => console} />}
-          />
-          <Route
-            // Route to test component
+    <div className='app'>
+      <Router>
+        <Routes>
+          <Route path='/' element={<Navigate to='/search' />} />
+          <Route path='/search' element={<SearchPage />} />
+          <Route path='*' element={<NotFound />} />
 
-            path="/testQuestionComp"
-            element={<QuestionComponent question="Test Question" onAnswerChange={(answer: string) => console} />}
-          />
-          <Route
-            // Route to test component
+          // Test pages
 
-            path="/testItemRecBox"
-            element={
-              <ItemRecommendationBox
-                itemName="Test Item"
-                itemDesc="Test Description"
-                itemPros={['Pro 1', 'Pro 2']}
-                itemCons={['Con 1', 'Con 2']}
-              />
-            }
-          />
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+          <Route path='/testQuestionComp' element={<QuestionComponentTest/>}/>
+          <Route path='/testItemRecBox' element={<ItemRecommendationBoxTest/>}/>
+        </Routes>
+      </Router>
+    </div>
   );
 };
 
