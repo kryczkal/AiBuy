@@ -3,7 +3,7 @@ import { CssBaseline, Container } from '@mui/material';
 import Header from 'src/components/SearchComponents/Header';
 import SearchForm from 'src/components/SearchComponents/SearchForm';
 
-const AIShoppingAssistant: React.FC = () => {
+const SearchPage: React.FC = () => {
   const [problem, setProblem] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -27,4 +27,4 @@ const AIShoppingAssistant: React.FC = () => {
   );
 };
 
-export default AIShoppingAssistant;
+export default SearchPage;
