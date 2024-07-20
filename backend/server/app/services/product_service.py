@@ -3,10 +3,10 @@ from app.models.product import Product
 from typing import List, Dict
 
 class ProductService:
-    def __init__(self):
-        self.llm_service = LLMService()
+    def __init__(self, config_path: str):
+        self.llm_service = LLMService(config_path)
 
-    
+
     async def process_query(self, query: str) -> Dict:
         is_detailed = await self.llm_service.is_prompt_detailed_enough(query)
         if not is_detailed:
