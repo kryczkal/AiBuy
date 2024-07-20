@@ -2,7 +2,7 @@ import React from 'react';
 
 import ItemRecommendationBox from 'src/components/ItemRecommendation/ItemRecommendationBox';
 
-const ItemRecommendationTest = () => {
+const ItemRecommendationBoxTest = () => {
   return <ItemRecommendationBox
     itemName="Test Item"
     itemDesc="Test Description"
@@ -11,4 +11,4 @@ const ItemRecommendationTest = () => {
          />;
 };
 
-export default ItemRecommendationTest;
+export default ItemRecommendationBoxTest;

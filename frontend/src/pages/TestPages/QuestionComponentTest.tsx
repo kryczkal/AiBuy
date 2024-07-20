@@ -1,10 +1,10 @@
 import QuestionComponent from '../../components/QuestionComponent/QuestionComponent';
 
-const ItemRecommendationTest = () => {
+const QuestionComponentTest = () => {
   return <QuestionComponent
     question={'Test Question'}
     onAnswerChange={(answer: string) => console}
          />;
 };
 
-export default ItemRecommendationTest;
+export default QuestionComponentTest;
