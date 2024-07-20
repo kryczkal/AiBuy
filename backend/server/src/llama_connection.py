@@ -1,22 +1,22 @@
 import configparser
 from together import Together
 
-def get_response(messages, config, my_client=None):
+config_file_path = "../config.ini"
+
+
+def get_response(_messages, _config_file_path, _client=None):
     # getting api_key from config
     cnf = configparser.ConfigParser()
-    cnf.read('../config.ini')
-    key = cnf['llama']['api_key']
+    cnf.read(_config_file_path)
 
-    # if my_client == None:
-
-
-
-if __name__ == '__main__':
     # setting up client
-    client = Together(api_key=key)
-    response = client.chat.completions.create(
+    if _client is None:
+        key = cnf['llama']['api_key']
+        _client = Together(api_key=key)
+
+    response = _client.chat.completions.create(
         model="meta-llama/Meta-Llama-3-70B-Instruct-Lite",
-        messages=[{"role": "user", "content": "What is the capital of France?"}],
+        messages=_messages,
         max_tokens=int(cnf['llama']['max_tokens']),
         temperature=float(cnf['llama']['temperature']),
         top_p=float(cnf['llama']['top_p']),
@@ -25,4 +25,10 @@ if __name__ == '__main__':
         stop=["<|eot_id|>"],
         stream=False
     )
-    print(response.choices[0].message.content)
+    return response.choices[0].message.content
+
+
+if __name__ == '__main__':
+    # setting up client
+    message = [{"role": "user", "content": "What is the capital of France?"}]
+    print(get_response(message, config_file_path))
