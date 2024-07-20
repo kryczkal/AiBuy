@@ -9,7 +9,9 @@ router = APIRouter()
 
 
 class QueryRequest(BaseModel):
-    queryComponents: List[str]
+    basicPrompt: str
+    questions: List[str]
+    answers: List[str]
 
 
 class UpdateQueryRequest(BaseModel):
