@@ -1,20 +1,38 @@
 @keyframes floatIn {
-    0% {
-        transform: translateY(50px);
-        opacity: 0;
-    }
-    100% {
-        transform: translateY(0);
-        opacity: 1;
-    }
+  0% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
-.blocks {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+.MuiStack-root {
+  margin-top: 3rem;
+}
+
+.results {
+  width: 100%;
+  max-height: 45dvh;
+  overflow: scroll;
+  margin-top: 2rem;
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+      -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+
 }
 
 .float-in {
-    animation: floatIn 0.5s ease-in-out;
+  animation: floatIn 0.5s ease-in-out;
+  height: 6rem;
+  background-color: #333333;
+  border-radius: .7rem;
 }
+
