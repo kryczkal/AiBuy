@@ -59,6 +59,8 @@ __pycache__
 *.pyd
 .Python
 env
+.env
+config.ini
 
 # Terraform
 .terraform*
