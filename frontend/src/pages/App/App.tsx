@@ -1,4 +1,4 @@
-import SearchPage from '../SearchPage/SearchPage';
+import SearchPage from 'src/pages/SearchPage/SearchPage';
 
 const App = () => {
   return (
