@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { CssBaseline, Container } from '@mui/material';
+
 import Header from 'src/components/SearchComponents/Header';
 import SearchForm from 'src/components/SearchComponents/SearchForm';
+import { API_ENDPOINTS } from 'src/api/apiConfig';
 
 const SearchPage: React.FC = () => {
   const [problem, setProblem] = useState('');
@@ -10,6 +12,8 @@ const SearchPage: React.FC = () => {
     e.preventDefault();
     console.log('Submitted problem:', problem);
   };
+
+
 
   return (
     <Container component="main" maxWidth="sm">
