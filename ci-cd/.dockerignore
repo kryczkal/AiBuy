@@ -1,0 +1,17 @@
+.git
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env
+.dockeringore
+.coverage
+.coverage.*
+.env
+node_modules
+.DS_Store
+*.log
+*.md
+Dockerfile
+docker-compose.yml
