@@ -1,0 +1,12 @@
+.research-loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+
+    .loading-message {
+        margin-bottom: 20px;
+        color: #333;
+    }
+}
