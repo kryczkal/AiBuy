@@ -14,9 +14,9 @@ class ProductService:
             questions = await self.llm_service.get_details_questions(query)
             return {"status": "need_more_details", "questions": questions}
         
-        solutions = await self.llm_service.get_solutions(query)
+        #solutions = await self.llm_service.get_solutions(query)
         components = await self.llm_service.get_components()
-        return {"status": "success", "solutions": solutions, "components": components}
+        return {"status": "success", "components": components}  # "solutions": solutions, 
 
     async def update_query(self, query: str, answers: List[str]) -> str:
         updated_query = await self.llm_service.update_issue_details([query] + answers)

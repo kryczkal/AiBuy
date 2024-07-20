@@ -33,10 +33,11 @@ class LLMService:
         # This is a placeholder implementation
         return " ".join(question_answers)
 
-    async def get_solutions(self, prompt: str) -> str:
+    """async def get_solutions(self, prompt: str) -> str:
         # Generate solutions based on the prompt
         # This is a placeholder implementation
         return f"Here are some solutions for '{prompt}': ..."
+    """
 
     async def get_components(self) -> List[dict]:
         # Get components for IdeaObject
