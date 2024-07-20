@@ -62,8 +62,9 @@ env
 
 # Terraform
 .terraform*
-terraform.tfstate
-terraform.tfstate.backup
+.terraform/*
+*terraform.tfstate*
+*terraform.tfstate.backup*
 
 # Credentials
 credentials.json
