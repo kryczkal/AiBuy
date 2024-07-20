@@ -2,6 +2,7 @@ import { Route, Routes, Navigate, BrowserRouter } from 'react-router-dom';
 import React from 'react';
 
 import NotFound from '../NotFound/NotFound';
+
 import QuestionComponentTest from '../TestPages/QuestionComponentTest';
 import ItemRecommendationBoxTest from '../TestPages/ItemRecommendationBoxTest';
 import Layout from '../Layout/Layout';
@@ -27,6 +28,7 @@ const App = () => {
             <Route path="/testing" element={<TestingPage />} />
             <Route path="*" element={<NotFound />} />
           </Route>
+
         </Routes>
       </BrowserRouter>
     </div>
