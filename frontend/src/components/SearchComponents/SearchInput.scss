@@ -1,0 +1,27 @@
+.search-input {
+    .MuiTextField-root {
+        width: 100%;
+
+        .MuiOutlinedInput-root {
+            border-radius: 25px;
+            background-color: #f9f9f9;
+
+            &:hover .MuiOutlinedInput-notchedOutline {
+                border-color: #ccc;
+            }
+
+            &.Mui-focused .MuiOutlinedInput-notchedOutline {
+                border-color: #333;
+                border-width: 1px;
+            }
+
+            .MuiOutlinedInput-input {
+                padding: 10px 14px;
+            }
+
+            .MuiOutlinedInput-notchedOutline {
+                border-color: #ddd;
+            }
+        }
+    }
+}
