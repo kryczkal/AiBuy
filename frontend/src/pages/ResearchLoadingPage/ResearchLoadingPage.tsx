@@ -2,38 +2,57 @@ import React, { useState, useEffect } from 'react';
 
 import ResearchLoadingState from 'src/components/ResearchLoadingComponents/ResearchLoadingState';
 import './ResearchLoadingPage.scss';
+import ResearchLoadingBackground from 'src/components/ResearchLoadingComponents/ResearchLoadingBackground';
+import { ResearchStateMessage } from 'src/api/apiCalls';
 
 const ResearchLoadingPage: React.FC = () => {
-  const [loadingMessage, setLoadingMessage] = useState('Starting research...');
+  const [messages, setMessages] = useState<ResearchStateMessage[]>([]);
 
   useEffect(() => {
-    const messages = [
-      'Starting research...',
-      'Gathering data on latest models...',
-      'Analyzing reviews and ratings...',
-      'Compiling the best options...',
-      'Finalizing recommendations...'
-    ];
-
-    const updateMessage = (index: number) => {
-      setLoadingMessage(messages[index]);
-      if (index < messages.length - 1) {
-        setTimeout(() => updateMessage(index + 1), 2000);
+    const interval = setInterval(() => {
+      const newMessage: ResearchStateMessage = generateMessage();
+      if (newMessage.type !== 'none') {
+        setMessages(prevMessages => [...prevMessages, newMessage]);
       }
-    };
+    }, 2000);
 
-    updateMessage(0);
-
-    return () => {
-      setLoadingMessage('Starting research...');
-    };
+    return () => clearInterval(interval);
   }, []);
+
+  // Temporary function to generate random messages (simulating a loading state)
+  const generateMessage = (): ResearchStateMessage => {
+    const types: ResearchStateMessage['type'][] = ['url', 'info', 'error', 'none'];
+    const type = types[Math.floor(Math.random() * types.length)];
+    let content = '';
+
+    switch (type) {
+      case 'url':
+        content = 'Visiting: https://example.com';
+        break;
+      case 'info':
+        content = 'Analyzing data...';
+        break;
+      case 'error':
+        content = 'Error connecting to the data source.';
+        break;
+      case 'none':
+        return { type, content: '' }; // No update
+    }
+
+    return { type, content };
+  };
+
+  const latestMessage = messages[messages.length - 1];
 
   return (
     <div className="research-loading-page">
-      <ResearchLoadingState loadingMessage={loadingMessage} />
-    </div>
-  );
+      <ResearchLoadingBackground messages={messages} />
+      {latestMessage ? (
+        <ResearchLoadingState loadingMessage={latestMessage.content} />
+      ) : (
+        <ResearchLoadingState loadingMessage="Waiting for updates..." />
+      )}
+    </div>);
 };
 
 export default ResearchLoadingPage;

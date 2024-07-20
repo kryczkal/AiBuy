@@ -1,0 +1,22 @@
+.research-loading-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    box-sizing: border-box;
+    overflow: auto;
+
+    .message {
+        display: flex;
+        align-items: center;
+        color: #666;
+        font-size: 0.8rem;
+
+        svg {
+            margin-right: 5px;
+        }
+    }
+}

@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+
 import ResearchLoadingPage from '../ResearchLoadingPage/ResearchLoadingPage';
 const TestingPage = () => {
   return (
