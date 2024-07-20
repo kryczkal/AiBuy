@@ -7,15 +7,18 @@ import { API_ENDPOINTS } from 'src/api/apiConfig';
 import QuestionComponent from 'src/components/QuestionComponent/QuestionComponent';
 import SearchResultComponent from 'src/components/SearchResultComponent/SearchResultComponent';
 
+import 'src/components/SearchComponents/Flotat-in.scss';
+
 const mockResults = [
-  <QuestionComponent key={1}/>,
-  <SearchResultComponent key={2}/>
+  <QuestionComponent key={1} />,
+  <SearchResultComponent key={2} />
 ];
 
 const SearchPage: React.FC = () => {
   const [problem, setProblem] = useState('');
   const [components, setComponents] = useState<React.ReactNode[]>([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [animationKey, setAnimationKey] = useState(0);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,6 +26,7 @@ const SearchPage: React.FC = () => {
 
     setIsSearching(true);
     setComponents(mockResults);
+    setAnimationKey(prevKey => prevKey + 1); // Change the key to re-trigger the animation
   };
 
   return (
@@ -38,8 +42,12 @@ const SearchPage: React.FC = () => {
         onSubmit={handleSubmit}
       />
       {isSearching && (
-        <div className='blocks'>
-          {components.map((component) => ( component ))}
+        <div className='blocks' key={animationKey}>
+          {components.map((component, index) => (
+            <div key={index} className="float-in">
+              {component}
+            </div>
+          ))}
         </div>
       )}
     </Container>
