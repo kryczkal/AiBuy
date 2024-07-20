@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import React from 'react';
 
 import NotFound from '../NotFound/NotFound';
+
 import QuestionComponentTest from '../TestPages/QuestionComponentTest';
 import ItemRecommendationBoxTest from '../TestPages/ItemRecommendationBoxTest';
 
@@ -17,7 +18,6 @@ const App = () => {
           <Route path='/' element={<Navigate to='/search' />} />
           <Route path='/search' element={<SearchPage />} />
           <Route path='*' element={<NotFound />} />
-
           // Test pages
 
           <Route path='/testQuestionComp' element={<QuestionComponentTest/>}/>
