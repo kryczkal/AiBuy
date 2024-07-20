@@ -8,7 +8,7 @@ import QuestionComponent from 'src/components/QuestionComponent/QuestionComponen
 import SearchResultComponent from 'src/components/SearchResultComponent/SearchResultComponent';
 import FloatingComponents from 'src/components/SearchComponents/FloatingComponents';
 
-import 'src/components/SearchComponents/Flotat-in.scss';
+import './SearchPage.scss';
 
 const mockResults = [
   <QuestionComponent key={1} />,
@@ -32,18 +32,22 @@ const SearchPage: React.FC = () => {
   return (
     <Container component="main" maxWidth="sm">
       <CssBaseline />
-      <Header
-        title="AI Shopping Assistant"
-        description="Describe what you need, and we'll find the perfect solution"
-      />
-      <SearchForm
-        problem={problem}
-        onProblemChange={(e) => setProblem(e.target.value)}
-        onSubmit={handleSubmit}
-      />
-      {isDisplayingComps && (
-        <FloatingComponents components={components} animationKey={animationKey}/>
-      )}
+      <div
+        className={`centered-container ${isDisplayingComps ? 'floating-up' : ''}`}
+      >
+        <Header
+          title="AI Shopping Assistant"
+          description="Describe what you need, and we'll find the perfect solution"
+        />
+        <SearchForm
+          problem={problem}
+          onProblemChange={(e) => setProblem(e.target.value)}
+          onSubmit={handleSubmit}
+        />
+        {isDisplayingComps && (
+          <FloatingComponents components={components} animationKey={animationKey} />
+        )}
+      </div>
     </Container>
   );
 };
