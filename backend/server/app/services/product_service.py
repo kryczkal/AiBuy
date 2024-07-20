@@ -4,8 +4,8 @@ from typing import List, Dict
 
 
 class ProductService:
-    def __init__(self, config_file_path):
-        self.llm_service = LLMService(config_file_path)
+    def __init__(self):
+        self.llm_service = LLMService("C:\\Users\\admin\\projects\\AiBuy\\AiBuy\\backend\\server\\config.ini")
 
     
     async def process_query(self, query: str) -> Dict:
