@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import React from 'react';
 
 import NotFound from '../NotFound/NotFound';
+import ItemRecommendationBox from '../../components/ItemRecommendationBoxComponent/ItemRecommendationBox';
 
 import SearchPage from 'src/pages/SearchPage/SearchPage';
 import QuestionComponent from 'src/components/QuestionComponent/QuestionComponent';
@@ -17,11 +18,12 @@ const App = () => {
           <Route path='*' element={<NotFound />} />
 
           // Routes to test components
-          <Route path='/testQuestionComp' element={<QuestionComponent question="Test Question" onAnswerChange ={
+          <Route path='/testQuestionComp' element={<QuestionComponent question="Test Question" onAnswerChange={
             (answer: string) => console
           }
                                                    />}
           />
+          <Route path='/testItemRecBox' element={<ItemRecommendationBox itemName="Test Item" itemDesc="Test Description" itemPros={['Pro 1', 'Pro 2']} itemCons={['Con 1', 'Con 2']} />}/>
         </Routes>
       </Router>
     </div>
