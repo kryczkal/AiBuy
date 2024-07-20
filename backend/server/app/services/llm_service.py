@@ -1,9 +1,18 @@
 from typing import List
+import configparser
+from together import Together
+
 
 class LLMService:
-    def __init__(self):
+    def __init__(self, config_file_path):
         # Initialize LLaMA model here
-        pass
+        # Reading config file
+        self.cnf = configparser.ConfigParser()
+        self.cnf.read(config_file_path)
+        api_key = self.cnf['llama']['api_key']
+
+        # Initializing connection
+        self.client = Together(api_key=api_key)
 
     async def is_prompt_detailed_enough(self, prompt: str) -> bool:
         # Implement logic to check if the prompt is detailed enough

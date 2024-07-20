@@ -2,6 +2,7 @@ from app.services.llm_service import LLMService
 from app.models.product import Product
 from typing import List, Dict
 
+
 class ProductService:
     def __init__(self, config_path: str):
         self.llm_service = LLMService(config_path)
