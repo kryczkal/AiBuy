@@ -1,0 +1,29 @@
+.item-recommendation-box {
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+
+    .MuiCardMedia-root {
+        height: 150px;
+        object-fit: cover;
+    }
+
+    .MuiCardContent-root {
+        padding: 16px;
+        .MuiTypography-h5 {
+            color: #333;
+        }
+        .MuiTypography-body2 {
+            margin-bottom: 16px;
+            color: #666;
+        }
+    }
+
+    .pro-icon {
+        color: green;
+    }
+
+    .con-icon {
+        color: red;
+    }
+}
