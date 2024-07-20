@@ -1,0 +1,13 @@
+/* Define keyframes for the floating animation */
+@keyframes floatUp {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-270px);
+    }
+}
+
+.floating-up {
+    animation: floatUp 0.5s forwards;
+}
