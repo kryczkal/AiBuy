@@ -6,6 +6,7 @@ import SearchForm from 'src/components/SearchComponents/SearchForm';
 import { API_ENDPOINTS } from 'src/api/apiConfig';
 import QuestionComponent from 'src/components/QuestionComponent/QuestionComponent';
 import SearchResultComponent from 'src/components/SearchResultComponent/SearchResultComponent';
+import FloatingComponents from 'src/components/SearchComponents/FloatingComponents';
 
 import 'src/components/SearchComponents/Flotat-in.scss';
 
@@ -16,16 +17,15 @@ const mockResults = [
 
 const SearchPage: React.FC = () => {
   const [problem, setProblem] = useState('');
-  const [components, setComponents] = useState<React.ReactNode[]>([]);
-  const [isSearching, setIsSearching] = useState(false);
+  const [components, setComponents] = useState<React.ReactNode[]>(mockResults);
+  const [isDisplayingComps, setIsDisplayingComps] = useState(false);
   const [animationKey, setAnimationKey] = useState(0);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Submitted problem:', problem);
 
-    setIsSearching(true);
-    setComponents(mockResults);
+    setIsDisplayingComps(true);
     setAnimationKey(prevKey => prevKey + 1); // Change the key to re-trigger the animation
   };
 
@@ -41,14 +41,8 @@ const SearchPage: React.FC = () => {
         onProblemChange={(e) => setProblem(e.target.value)}
         onSubmit={handleSubmit}
       />
-      {isSearching && (
-        <div className='blocks' key={animationKey}>
-          {components.map((component, index) => (
-            <div key={index} className="float-in">
-              {component}
-            </div>
-          ))}
-        </div>
+      {isDisplayingComps && (
+        <FloatingComponents components={components} animationKey={animationKey}/>
       )}
     </Container>
   );
