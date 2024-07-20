@@ -7,6 +7,7 @@ class ProductService:
     def __init__(self, config_file_path):
         self.llm_service = LLMService(config_file_path)
 
+    
     async def process_query(self, query: str) -> Dict:
         is_detailed = await self.llm_service.is_prompt_detailed_enough(query)
         if not is_detailed:
