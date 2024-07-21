@@ -38,7 +38,7 @@ const FloatingComponents: React.FC<FloatingComponentsProps> = ({ data, isValidPr
         {data &&
           isValidPrompt &&
           data.components.map((component, index) => (
-            <Result key={index} index={index} name={component.itemName} description={component.itemDesc} />
+            <Result key={index} index={index} name={component.name} description={component.description} />
           ))}
         {data && !isLoading && !isValidPrompt && (
           <form style={{ width: '100%' }}>

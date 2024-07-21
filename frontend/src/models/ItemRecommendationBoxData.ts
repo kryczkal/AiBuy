@@ -1,5 +1,5 @@
 export interface ItemRecommendationBoxData {
-  itemName: string;
-  itemDesc: string;
+  name: string;
+  description: string;
   itemImgUrl?: string;
 }
