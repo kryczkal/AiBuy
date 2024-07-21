@@ -16,7 +16,7 @@ const SearchPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isValidResponse, setIsValidResponse] = useState(false);
   const [requestData, setRequestData] = useState<ProcessQueryResult | null>(null);
-  const [questionCounter, setQuestionCounter] = useState(0);
+  const [questionCounter, setQuestionCounter] = useState(999);
 
   // Effect to handle API calls when questionCounter reaches 1
   useEffect(() => {
@@ -56,7 +56,7 @@ const SearchPage: React.FC = () => {
     setAnswers([]);
     setRequestData(null); // Clear previous request data
     setIsLoading(true);
-    setQuestionCounter(1); // Initialize questionCounter to trigger API call
+    setQuestionCounter(0); // Initialize questionCounter to trigger API call
   };
 
   return (
