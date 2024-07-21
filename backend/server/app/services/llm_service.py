@@ -100,6 +100,7 @@ class LLMService:
 
         # deleting empty strings
         final_questions = [string for string in trimmed_questions if string]
+        self.logger.debug(' '.join(final_questions))
 
         return final_questions
 
