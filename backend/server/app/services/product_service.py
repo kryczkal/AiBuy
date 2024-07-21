@@ -4,6 +4,7 @@ from typing import List, Dict
 from src.logger import global_loger
 import json
 
+MAX_NUMBER_OF_QUESTIONS = 5
 
 class ProductService:
     def __init__(self, config_path: str):
@@ -27,7 +28,7 @@ class ProductService:
 
         is_detailed = await self.llm_service.is_prompt_detailed_enough(query)
         if not is_detailed:
-            questions = await self.llm_service.get_details_questions(query)
+            questions = await self.llm_service.get_details_questions(query, MAX_NUMBER_OF_QUESTIONS)
             response = {"status": "need_more_details", "questions": questions}
         else:
             components = await self.llm_service.get_components()
