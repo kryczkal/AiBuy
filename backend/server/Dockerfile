@@ -19,8 +19,6 @@ RUN pip install --no-cache-dir --upgrade -r requirements.txt
 #------------------------------------------------------------------------------#
 
 FROM dependencies AS runtime
-EXPOSE 80/tcp
+EXPOSE 80
 COPY . .
-# --proxy-headers is used to trust the headers from the proxy server (in case of using a load-balancer)
-# --port is used to specify the port to listen on
-CMD ["fastapi", "run", "src/main.py", "--proxy-headers", "--port", "80"]
+CMD ["fastapi", "run", "--proxy-headers", "--port", "80"]
