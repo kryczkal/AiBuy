@@ -1,7 +1,7 @@
 from app.services.llm_service import LLMService
 from app.models.product import Product, Products
 from typing import List, Dict
-from server.src.logger import global_loger
+from server.utilities.logger import global_loger
 import json
 
 MAX_NUMBER_OF_QUESTIONS = 5
