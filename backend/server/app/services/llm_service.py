@@ -23,7 +23,7 @@ class LLMService:
     async def is_prompt_detailed_enough(self, prompt: str) -> bool:
         template = PromptTemplate(
             input_variables=["prompt"],
-            template = """Evaluate the user's description of their issue on a scale from 0 to 5, where points are awarded based on the level of detail and clarity provided. The purpose of this evaluation is to ensure that the description is thorough enough for us to offer effective solutions or recommend suitable products. Assign points according to the following criteria:
+            template="""Evaluate the user's description of their issue on a scale from 0 to 5, where points are awarded based on the level of detail and clarity provided. The purpose of this evaluation is to ensure that the description is thorough enough for us to offer effective solutions or recommend suitable products. Assign points according to the following criteria:
 
         Level 0 (0 points): The description is very vague, lacks any specific information, and doesn't provide a clear understanding of the issue.
         Level 1 (1 point): The description includes a basic overview of the issue. It should answer at least one of the following questions: What is the issue? Who is affected?
@@ -49,14 +49,54 @@ class LLMService:
                 return int(answer.content) >= 4
         return False
 
-    async def get_details_questions(self, question: str) -> List[str]:
+    async def get_details_questions(self, prompt: str, level: int, question_count: int) -> List[str]:
         # Generate questions to get more details
-        # This is a placeholder implementation
-        return [
-            "Can you provide more specific information about X?",
-            "What are your preferences regarding Y?",
-            "Have you considered Z?"
-        ]
+        template = PromptTemplate(
+            input_variables=["prompt"],
+            template=f"""Based on the user's initial description of their issue: {prompt} and description level {level}
+                                generate a set of {question_count} context-dependent questions to help them improve their description. The goal is to ensure the description is detailed and thorough enough for us to offer effective solutions or recommend suitable products. The questions should aim to elevate the description through five levels of detail, and the output should have each question separated by the '|' character.
+
+                                Your output should contain questions and nothing else than questions and '|' between them.
+                                IF YOU PUT ANY OTHER TEXT THAN QUESTIONS RELATED TO THE PROBLEM A KITTEN WILL DIE.
+                                The levels are defined as follows:
+
+                                Level 0 to Level 1: If the description is very vague, ask questions to gain a basic understanding.
+
+                                Examples: 'What is the issue you're facing?' | 'Who is affected by this issue?'
+                                Level 1 to Level 2: If the description includes a basic overview, ask for more context.
+
+                                Examples: 'When does this issue occur?' | 'Where does this issue happen?'
+                                Level 2 to Level 3: If the description provides some context, ask for specific examples or scenarios.
+
+                                Examples: 'Can you provide specific examples or scenarios where this issue occurs?' | 'How does this issue affect you or others involved?'
+                                Level 3 to Level 4: If the description includes specific examples, ask about potential causes or contributing factors.
+
+                                Examples: 'What do you think are the potential causes of this issue?' | 'Are there any contributing factors that you have noticed?'
+                                Level 4 to Level 5: If the description identifies potential causes, ask about previous attempts to resolve the issue.
+
+                                Examples: 'What have you tried so far to address this issue?' | 'Were there any solutions that partially worked or made the issue worse?'
+                                Generate context-specific questions based on the current level of detail in the user's description to help them improve and provide a more thorough description. Ensure each question is separated by the '|' character. Consider the following example:
+
+                                User's issue description: 'I have trouble sleeping at night.'
+                                Output questions: 'What do you think causes your trouble sleeping?' | 'When did this issue start?' | 'How does this issue affect your daily life?' | 'Have you tried any solutions to improve your sleep? If so, what were they?' | 'Are there specific times or conditions when your sleep trouble is worse?'""")
+
+        chain = template | self.model
+
+        answer = chain.invoke({"prompt": prompt})
+
+        # getting the list of trimmed questions
+        list_of_questions = answer.content.split('|')
+        trimmed_questions = [question.strip() for question in list_of_questions]
+
+        # deleting the intro if the heartless chat decides to kill a kitty
+        first_question = trimmed_questions[0]
+        first_question_parts = first_question.split('\n')
+        trimmed_questions[0] = first_question_parts[-1].strip()
+
+        # deleting empty strings
+        final_questions = [string for string in trimmed_questions if string]
+
+        return final_questions
 
     async def update_issue_details(self, question_answers: List[str]) -> str:
         # Update the issue details based on answers
