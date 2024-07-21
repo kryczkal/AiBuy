@@ -2,6 +2,13 @@ from typing import List
 import configparser
 from together import Together
 
+from langchain.prompts import PromptTemplate
+from langchain.chains import LLMChain
+from langchain.output_parsers import RetryWithErrorOutputParser
+from langchain_openai import ChatOpenAI
+import os
+
+from ...src.langchain_utils.NumberEndingOutputParser import NumberEndingOutputParser
 
 class LLMService:
     def __init__(self, config_file_path):
@@ -10,14 +17,42 @@ class LLMService:
         self.cnf = configparser.ConfigParser()
         self.cnf.read(config_file_path)
         api_key = self.cnf['llama']['api_key']
+        model_name = self.cnf['llama'].get('model_name', 'meta-llama/Meta-Llama-3-70B-Instruct-Lite')
 
-        # Initializing connection
-        self.client = Together(api_key=api_key)
+        self.model = ChatOpenAI(
+            base_url="https://api.together.xyz/v1",
+            api_key=api_key,
+            model=model_name,
+        )
 
     async def is_prompt_detailed_enough(self, prompt: str) -> bool:
-        # Implement logic to check if the prompt is detailed enough
-        # This is a placeholder implementation
-        return len(prompt.split()) > 20
+        template = PromptTemplate(
+            input_variables=["prompt"],
+            template = """Evaluate the user's description of their issue on a scale from 0 to 5, where points are awarded based on the level of detail and clarity provided. The purpose of this evaluation is to ensure that the description is thorough enough for us to offer effective solutions or recommend suitable products. Assign points according to the following criteria:
+
+        Level 0 (0 points): The description is very vague, lacks any specific information, and doesn't provide a clear understanding of the issue.
+        Level 1 (1 point): The description includes a basic overview of the issue. It should answer at least one of the following questions: What is the issue? Who is affected?
+        Level 2 (2 points): Building on Level 1, the description provides more context. It should answer the questions: When does the issue occur? Where does it happen?
+        Level 3 (3 points): Building on Level 2, the description includes specific examples or scenarios. It should answer the question: How does the issue affect the user?
+        Level 4 (4 points): Building on Level 3, the description identifies potential causes or contributing factors. It should answer the question: Why does the issue occur?
+        Level 5 (5 points): Building on Level 4, the description offers insight into previous attempts to resolve the issue or other related efforts. It should provide details on: What has been tried so far to address the issue?
+        Assign a score based on these criteria and provide feedback on how the description can be improved to reach the next level if it does not already score a 5.
+
+        User Description: {prompt}
+        Output the score, and only the score as a single digit:""")
+
+        chain = template | self.model
+
+        answer = ""
+        i = 0
+        while (not answer.isdigit() and i < 3):
+            answer = await chain.ainvoke({"prompt": prompt})
+            answer = answer.content.strip()
+
+            i += 1
+            if answer.isdigit():
+                return int(answer.content) >= 4
+        return False
 
     async def get_details_questions(self, question: str) -> List[str]:
         # Generate questions to get more details
