@@ -59,12 +59,16 @@ class LLMService:
         ]
 
     # TODO: Make sure this is correct
-    async def do_perplexity_research(self, base_prompt: str, question_answer_list: List[dict]) -> str:
+    async def do_perplexity_research(self, name: str, description: str, questions: List[str], answers: List[str]) -> str:
+
+        base_prompt = """PLACEHOLDER FOR PROMPT""" # TODO: do this
+        system_prompt = """TBe precise and concise."""
+        
 
         messages = [
                 {
                     "role": "system",
-                    "content": "Be precise and concise."
+                    "content": system_prompt
                 },
                 {
                     "role": "user",
@@ -72,14 +76,14 @@ class LLMService:
                 }
             ]
 
-        for item in question_answer_list:
+        for i in range(len(questions)):
             assistant = {
                     "role": "assistant",
-                    "content": item.get("question")
+                    "content": questions[i]
                 }
             user = {
                     "role": "user",
-                    "content": item.get("answer")
+                    "content": answers[i]
                 }
             messages.append(assistant)
             messages.append(user)
