@@ -19,6 +19,6 @@ RUN pip install --no-cache-dir --upgrade -r requirements.txt
 #------------------------------------------------------------------------------#
 
 FROM dependencies AS runtime
-EXPOSE 80/tcp
+EXPOSE 80
 COPY . .
-CMD ["python", "-m", "uvicorn", "app.main:app", "--proxy-headers", "--port", "80"]
+CMD ["fastapi", "run", "--proxy-headers", "--port", "80"]
