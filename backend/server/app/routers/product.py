@@ -46,7 +46,7 @@ async def process_query(request: QueryRequest = Body(...),
     return await product_service.process_query(request.basicPrompt, request.questions, request.answers)
 
 @router.post("/do-research")
-async def process_query(request: ResearchRequest = Body(...),
+async def do_research(request: ResearchRequest = Body(...),
                         product_service: ProductService = Depends(get_product_service)) -> Products:
     return await product_service.do_research(request.name, request.description, request.questions, request.answers)
 
