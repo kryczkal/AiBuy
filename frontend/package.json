@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Spotify clone app",
   "private": true,
+"proxy": "http://backend.aibuy-llama3.com",
   "scripts": {
     "build": "webpack --mode=production --node-env=production --config webpack/webpack.prod.ts",
     "lint-fix": "eslint --fix ./src --ext js,ts,tsx",
