@@ -1,7 +1,7 @@
 from app.services.llm_service import LLMService
 from app.models.product import Product
 from typing import List, Dict
-from server.src.logger import global_loger
+from src.logger import global_loger
 import json
 
 

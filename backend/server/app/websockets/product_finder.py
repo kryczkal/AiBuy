@@ -1,3 +1,4 @@
+"""
 from fastapi import APIRouter, WebSocket
 from app.services.product_service import ProductService
 from .connection_manager import ConnectionManager
@@ -23,3 +24,4 @@ async def product_finder_websocket(websocket: WebSocket):
         print(f"WebSocket error: {e}")
     finally:
         manager.disconnect(session_id)
+"""
