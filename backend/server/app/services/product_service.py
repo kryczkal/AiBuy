@@ -1,10 +1,11 @@
 from app.services.llm_service import LLMService
 from app.models.product import Product, Products
 from typing import List, Dict
-from server.utilities.logger import global_loger
+from ..utilities.logger import global_loger
 import json
 
 MAX_NUMBER_OF_QUESTIONS = 5
+MAX_NUMBER_OF_SOLUTIONS = 3
 
 class ProductService:
     def __init__(self, config_path: str):
@@ -25,12 +26,15 @@ class ProductService:
         # If we received only the prompt skip the concatenation part
         query = prompt if len(questions) == 0 else await self.llm_service.update_issue_details(prompt, questions,
                                                                                                answers)
+        global_loger.debug(query)
+
         is_detailed = await self.llm_service.is_prompt_detailed_enough(query)
         if not is_detailed:
             questions = await self.llm_service.get_details_questions(query, MAX_NUMBER_OF_QUESTIONS)
             response = {"status": "need_more_details", "questions": questions}
         else:
-            components = await self.llm_service.get_components()
+            components = await self.llm_service.get_components(query, MAX_NUMBER_OF_SOLUTIONS)
+            global_loger.debug(str(components))
             response = {"status": "success", "components": components}
 
         global_loger.info(f"Sending response: {json.dumps(response)}")
