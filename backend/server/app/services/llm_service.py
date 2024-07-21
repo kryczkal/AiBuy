@@ -1,16 +1,16 @@
 import configparser
+import json
 import logging
+import os
 from typing import List
 
-from langchain.prompts import PromptTemplate
-from langchain_openai import ChatOpenAI
-from ..utilities.logger import log_init
-
-from together import Together
 import requests
 from dotenv import load_dotenv
-import json
-import os
+from langchain.prompts import PromptTemplate
+from langchain_openai import ChatOpenAI
+
+from ..utilities.logger import log_init
+
 
 class LLMService:
     def __init__(self, config_file_path):

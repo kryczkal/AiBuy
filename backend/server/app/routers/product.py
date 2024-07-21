@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, Body
-from app.services.product_service import ProductService
-from app.models.product import Product, Products
+from ..services.product_service import ProductService
+from ..models.product import Product, Products
 from typing import List, Dict
 from pydantic import BaseModel
 import os
