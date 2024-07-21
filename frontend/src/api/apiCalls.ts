@@ -3,40 +3,20 @@ import { logger } from 'react-query/types/react/logger';
 
 import { API_ENDPOINTS } from './apiConfig';
 
-// import { ItemRecommendationBoxData } from 'src/models/ItemRecommendationBoxData';
+import { ProcessQueryResult } from 'src/models/ProcessQueryResult';
+import { ProcessQueryFormat } from 'src/models/ProcessQueryFormat';
 
-interface ValidSearchPromptResponse {
-  status: string;
+export async function ProcessQueryApiCallThrowable(prompt : string, questions: string[], answers : string[]): Promise<ProcessQueryResult> {
+  const msg : ProcessQueryFormat = {
+    basicPrompt: prompt,
+    questions : questions,
+    answers : answers,
+  };
+
+  console.log('Sending process query request with payload: ', msg);
+  const response = await axios.post<ProcessQueryResult>(API_ENDPOINTS.processQuery, { msg });
+  return response.data;
 }
-
-interface ValidSearchPromptResponse {
-  status: string;
-}
-
-export async function validateSearchPrompt(prompt: string): Promise<boolean> {
-  try {
-    const response = await axios.post<ValidSearchPromptResponse>(API_ENDPOINTS.validateSearchResult, { prompt });
-    return response.data.status === 'success';
-  } catch (error) {
-    logger.error('Error validating search prompt:', error); // Log the entire error for debugging
-    return false;
-  }
-}
-
-// interface RecommendationResponse {
-//   recommendations: ItemRecommendationBoxData[];
-// }
-
-// export async function getRecommendations(prompt: string): Promise<ItemRecommendationBoxData[]> {
-// export async function getRecommendations(prompt: string): Promise<string[]> {
-//   try {
-//     const response = await axios.post<RecommendationResponse>(API_ENDPOINTS.getRecommendations, { prompt });
-//     return response.data.recommendations;
-//   } catch (error) {
-//     logger.error('Error validating recomendation query:', error); // Log the entire error for debugging
-//     return [];
-//   }
-// }
 
 export interface ResearchStateMessage {
   type: 'url' | 'info' | 'error' | 'none';
