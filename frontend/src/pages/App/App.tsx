@@ -2,17 +2,14 @@ import { Route, Routes, Navigate, BrowserRouter } from 'react-router-dom';
 import React from 'react';
 
 import NotFound from '../NotFound/NotFound';
-
 import QuestionComponentTest from '../TestPages/QuestionComponentTest';
 import ItemRecommendationBoxTest from '../TestPages/ItemRecommendationBoxTest';
 import Layout from '../Layout/Layout';
 import './App.scss';
 
-// import ItemRecommendationBox from '../../components/ItemRecommendationBoxComponent/ItemRecommendationBox';
 
 import SearchPage from 'src/pages/SearchPage/SearchPage';
-import TestingPage from 'src/pages/Testing/TestingPage';
-// import ItemRecommendation from 'src/components/ItemRecommendation/ItemRecommendation';
+import RefreshTestingPage from 'src/pages/TestPages/RefreshTestingPage';
 
 const App = () => {
   return (
@@ -25,7 +22,7 @@ const App = () => {
             // Test pages
             <Route path="/testQuestionComp" element={<QuestionComponentTest />} />
             <Route path="/testItemRecBox" element={<ItemRecommendationBoxTest />} />
-            <Route path="/testing" element={<TestingPage />} />
+            <Route path="/testing" element={<RefreshTestingPage />} />
             <Route path="*" element={<NotFound />} />
           </Route>
 

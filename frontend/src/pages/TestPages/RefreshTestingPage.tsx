@@ -1,12 +1,10 @@
 import React from 'react';
 
 import ResearchLoadingPage from '../ResearchLoadingPage/ResearchLoadingPage';
-const TestingPage = () => {
+const RefreshTestingPage = () => {
   return (
-    <div>
       <ResearchLoadingPage />
-    </div>
   );
 };
 
-export default TestingPage;
+export default RefreshTestingPage;
