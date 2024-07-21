@@ -5,9 +5,9 @@ import NotFound from '../NotFound/NotFound';
 
 import QuestionComponentTest from '../TestPages/QuestionComponentTest';
 import ItemRecommendationBoxTest from '../TestPages/ItemRecommendationBoxTest';
+import ProductRecommendationBoxTest from '../TestPages/ProductRecommendationBoxTest';
 
 import SearchPage from 'src/pages/SearchPage/SearchPage';
-import ItemRecommendation from 'src/components/ItemRecommendation/ItemRecommendation';
 
 
 const App = () => {
@@ -22,6 +22,7 @@ const App = () => {
 
           <Route path='/testQuestionComp' element={<QuestionComponentTest/>}/>
           <Route path='/testItemRecBox' element={<ItemRecommendationBoxTest/>}/>
+          <Route path='/testProdRecBox' element={<ProductRecommendationBoxTest/>}/>
         </Routes>
       </Router>
     </div>

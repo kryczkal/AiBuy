@@ -1,0 +1,45 @@
+.product-recommendation-box {
+  max-width: 350px;
+  margin: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+
+  .MuiCardContent-root {
+    padding: 16px;
+
+    .MuiTypography-h5 {
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    .MuiTypography-h6 {
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    a {
+      display: block;
+      margin-bottom: 8px;
+      color: #007bff;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .MuiTypography-body2 {
+      margin-bottom: 16px;
+      color: #666;
+    }
+  }
+
+  .pros-cons-list {
+    .MuiListItem-root {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+}
+
