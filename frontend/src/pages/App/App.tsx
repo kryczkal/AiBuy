@@ -8,7 +8,6 @@ import './App.scss';
 
 
 import SearchPage from 'src/pages/SearchPage/SearchPage';
-import RefreshTestingPage from 'src/pages/TestPages/RefreshTestingPage';
 
 const App = () => {
   return (
@@ -20,7 +19,6 @@ const App = () => {
             <Route path="/search" element={<SearchPage />} />
             // Test pages
             <Route path="/testItemRecBox" element={<ItemRecommendationBoxTest />} />
-            <Route path="/testing" element={<RefreshTestingPage />} />
             <Route path="*" element={<NotFound />} />
           </Route>
 

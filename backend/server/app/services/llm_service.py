@@ -95,7 +95,7 @@ class LLMService:
 
         chain = template | self.model
 
-        answer = chain.invoke({"prompt": prompt})
+        answer = await chain.ainvoke({"prompt": prompt})
 
         # getting the list of trimmed questions
         list_of_questions = answer.content.split('|')
@@ -129,20 +129,58 @@ class LLMService:
         return f"Here are some solutions for '{prompt}': ..."
     """
 
-    async def get_components(self) -> List[dict]:
+    async def get_components(self, updated_prompt: str, max_answers: str) -> List[dict]:
         # Get components for IdeaObject
-        # This is a placeholder implementation
-        return [
-            {"name": "Component1", "description": "Description of Component1"},
-            {"name": "Component2", "description": "Description of Component2"},
-        ]
+        template = PromptTemplate(
+            input_variables=["prompt"],
+            template=f"""Having problem description: {updated_prompt}, that might also include additional questions with answers helping you fully understand the problem, suggest up to {max_answers} products to solve it. All solutions must be splitted in two parts: name of the product which may solve the problem and description how it is solving the problem. Between name and description there MUST be '|' sign to split the parts of the answer. Between all of the solution there MUST be '$' sign separating them.  Problem description:
+                                DO NOT INCLUDE ANY '\n' SIGNS IN YOUR ANSWER.
+                                DO NOT INCLUDE ANY INTRODUCTION IN YOUR ANSWER.
+                                DO NOT PUT '\n'sign after '$' SIGN.
+                                THE ANSWER MUST BE IN ONE LINE AS THE ONE PROVIDED IN ANSWER.
+                                IF YOU FAIL TO FOLLOW THE RULES AN INNOCENT KITTY WILL DIE.
+                                'I'm looking for an organizer for my home office. I have papers and office supplies everywhere, and it's starting to get out of hand.
+                                What type of papers and office supplies are causing the clutter? Bills, contracts, receipts, notes, pens, markers.
+                                How much space do you have available in your home office for organization and storage? Medium-sized room with space for desk, bookshelf, and filing cabinet.
+                                Are there any specific tasks or activities that you struggle with due to the clutter and disorganization? Finding documents, staying organized, maintaining productivity, keeping workspace tidy.'
+
+                                Example expected answer:
+                                'Desk Organizer Set|A set including trays, compartments, and holders for papers, pens, and small office supplies that keeps frequently used items easily accessible and sorted, reducing clutter on the desk.$Wall-Mounted Document Organizer|A multi-pocket wall organizer for papers and files that Utilizes vertical space to keep documents sorted and off the desk, reducing clutter.$Filing Cabinet|A compact filing cabinet with multiple drawers that provides dedicated storage for important documents, making it easy to organize and retrieve bills, contracts, and receipts'""")
+
+        chain = template | self.model
+        answer = await chain.ainvoke({"prompt": updated_prompt})
+        print(answer.content)
+        print(answer)
+        # solution list
+        solution_list = answer.content.split('$')
+
+        # deleting empty strings
+        solution_nonempty_list = [string for string in solution_list if string]
+
+        dict_list = []
+
+        for i in range(0, len(solution_nonempty_list), 1):
+            split_solution = solution_nonempty_list[i].split('|')
+
+            # TODO: intro deletion
+            # if i==0 and '\n' in split_solution[0]:
+            #     split_name = split_solution[0].split('\n')
+            #     print(split_name)
+
+            output_dict = {}
+            if len(split_solution) >= 2:
+                output_dict["name"] = split_solution[0]
+                output_dict["description"] = split_solution[1]
+                dict_list.append(output_dict)
+
+        return dict_list
 
 
     # TODO: Make sure this is correct
     async def do_perplexity_research(self, name: str, description: str, questions: List[str], answers: List[str]) -> str:
 
         base_prompt = """PLACEHOLDER FOR PROMPT""" # TODO: do this
-        system_prompt = """TBe precise and concise."""
+        system_prompt = """You will get Product and """
         
 
         messages = [
@@ -182,4 +220,68 @@ class LLMService:
 
         return json.loads(response.text)["choices"][0]["message"]["content"]
 
-      
+    async def do_perplexity_research(self, name: str, description: str, questions: List[str], answers: List[str]) -> str:
+        base_prompt = f"""
+        Given the following product information:
+        Name: {name}
+        Description: {description}
+
+        Respond with a JSON array of objects, where each object represents a product and follows this format:
+        [
+        {{
+            "name": "name of product",
+            "description": "description of product",
+            "price": "price",
+            "amazon_link": "amazon_link"
+        }},
+        {{
+            "name": "name of product",
+            "description": "description of product",
+            "price": "price",
+            "amazon_link": "amazon_link"
+        }}
+        // add more objects as needed
+        ]
+        """
+        system_prompt = """You are an AI assistant that provides product research details in JSON format."""
+
+        messages = [
+            {
+                "role": "system",
+                "content": system_prompt
+            },
+            {
+                "role": "user",
+                "content": base_prompt
+            }
+        ]
+
+        for i in range(len(questions)):
+            assistant = {
+                "role": "assistant",
+                "content": questions[i]
+            }
+            user = {
+                "role": "user",
+                "content": answers[i]
+            }
+            messages.append(assistant)
+            messages.append(user)
+
+        payload = {
+            "model": "llama-3-sonar-small-32k-online",
+            "messages": messages
+        }
+        headers = {
+            "accept": "application/json",
+            "content-type": "application/json",
+            "authorization": f"Bearer {os.environ['PERPLEXITY_KEY']}"
+        }
+
+        response = requests.post(self.perplexity_url, json=payload, headers=headers)
+
+        return json.loads(response.text)["choices"][0]["message"]["content"]
+
+
+
+

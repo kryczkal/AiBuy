@@ -40,18 +40,3 @@ export async function ProcessResearchApiCallThrowable(name: string, description:
   });
   return response.data;
 }
-
-export interface ResearchStateMessage {
-  type: 'url' | 'info' | 'error' | 'none';
-  content: string;
-}
-
-export async function getResearchState(): Promise<ResearchStateMessage> {
-  try {
-    const response = await axios.get<string>(API_ENDPOINTS.getResearchState);
-    return JSON.parse(response.data);
-  } catch (error) {
-    console.log('Error getting research state:', error); // Log the entire error for debugging
-    return { type: 'error', content: 'Error fetching research state' };
-  }
-}

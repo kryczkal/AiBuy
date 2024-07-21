@@ -103,7 +103,7 @@ auth-docker() {
 
 
     gcloud config set project $1
-    sudo gcloud auth configure-docker
+    gcloud auth configure-docker
 
     create_separator
     echo -e "Docker has been authenticated to the artifact registry for project $1"
@@ -191,4 +191,25 @@ list-valid-artifact-repositories() {
         echo -e "Register to use with docker push: ${GREEN}$LOCATION-docker.pkg.dev/$PROJECT_ID/${REPO_NAME}${RESET}"
         create_separator
     done
+}
+
+docker_push_to_artifact_repo() {
+    if [ $# -ne 3 ] || [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+      echo "Usage: $0 <image-name> <image-tag> <repository-url>"
+      echo "Push a docker image to an artifact repository"
+      return 1
+    fi
+
+    local image_name="$1"
+    local image_tag="$2"
+    local repository_url="$3"
+
+    local full_image_tag="${repository_url}/${image_name}:${image_tag}"
+    echo "Tagging image $image_name:$image_tag as $full_image_tag..."
+    docker tag "${image_name}:${image_tag}" "${full_image_tag}"
+
+    echo "Pushing image to $full_image_tag..."
+    docker push "${full_image_tag}"
+
+    echo "Image $full_image_tag pushed successfully."
 }
