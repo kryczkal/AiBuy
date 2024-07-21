@@ -34,10 +34,15 @@ class LLMService:
             "Have you considered Z?"
         ]
 
-    async def update_issue_details(self, question_answers: List[str]) -> str:
+    async def update_issue_details(self, base_prompt: str, questions: List[str], answers: List[str]) -> str:
         # Update the issue details based on answers
         # This is a placeholder implementation
-        return " ".join(question_answers)
+
+        question_answer_sequence = [''] * (len(questions) + len(answers))
+        question_answer_sequence[0::2] = questions
+        question_answer_sequence[1::2] = answers
+
+        return base_prompt + ' '.join(question_answer_sequence)
 
     """async def get_solutions(self, prompt: str) -> str:
         # Generate solutions based on the prompt
@@ -93,5 +98,3 @@ class LLMService:
 
         return json.loads(response.text)["choices"][0]["message"]["content"]
         
-
-
