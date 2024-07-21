@@ -8,38 +8,40 @@ import QuestionComponent from '../QuestionComponent/QuestionComponent';
 import { ProcessQueryResult } from '../../models/ProcessQueryResult';
 
 interface FloatingComponentsProps {
-  animationKey: number;
+  data: ProcessQueryResult | null;
+  questions: string[];
+  answers: string[];
+  isValidPrompt: boolean;
 }
 
-const FloatingComponents: React.FC<FloatingComponentsProps> = ({ animationKey }) => {
-  const mockResult: ProcessQueryResult = {
-    status: 'success',
-    questions: [
-      'What is your favorite color?',
-      'What is your preferred music genre?',
-      'What kind of activities do you enjoy?',
-    ],
-    components: [
-      {
-        itemName: 'Noise-Cancelling Headphones',
-        itemDesc: 'Immerse yourself in your favorite music or podcasts without distractions.',
-        itemImgUrl: 'https://example.com/headphones.jpg',
-      },
-      {
-        itemName: 'Smart Speaker',
-        itemDesc: 'Control your smart home devices, play music, and get answers with voice commands.',
-        itemImgUrl: 'https://example.com/speaker.jpg',
-      },
-      {
-        itemName: 'Fitness Tracker',
-        itemDesc: 'Track your steps, heart rate, and sleep patterns to stay active and healthy.',
-        itemImgUrl: 'https://example.com/tracker.jpg',
-      },
-    ],
-  };
+const mockResult: ProcessQueryResult = {
+  status: 'success',
+  questions: [
+    'What is your favorite color?',
+    'What is your preferred music genre?',
+    'What kind of activities do you enjoy?',
+  ],
+  components: [
+    {
+      itemName: 'Noise-Cancelling Headphones',
+      itemDesc: 'Immerse yourself in your favorite music or podcasts without distractions.',
+      itemImgUrl: 'https://example.com/headphones.jpg',
+    },
+    {
+      itemName: 'Smart Speaker',
+      itemDesc: 'Control your smart home devices, play music, and get answers with voice commands.',
+      itemImgUrl: 'https://example.com/speaker.jpg',
+    },
+    {
+      itemName: 'Fitness Tracker',
+      itemDesc: 'Track your steps, heart rate, and sleep patterns to stay active and healthy.',
+      itemImgUrl: 'https://example.com/tracker.jpg',
+    },
+  ],
+};
+
+const FloatingComponents: React.FC<FloatingComponentsProps> = ({ data, isValidPrompt }) => {
   // Add more search results with different questions and items
-  const isValidPrompt = false;
-  const [result, setResults] = useState<ProcessQueryResult>(mockResult);
   const [jsonData, setJsonData] = useState({});
 
   const handleQuestionSubmit = (question, answer) => {
@@ -53,11 +55,14 @@ const FloatingComponents: React.FC<FloatingComponentsProps> = ({ animationKey })
     console.log('Submitted Answer:', answer, 'and questions:', question); // Optionally log the answer for debugging or further processing
   };
 
+  if (data == null)
+    return <></>;
+
   return (
     <Box className="results">
       <Stack spacing={2}>
         {isValidPrompt &&
-          result.components.map((component, index) => (
+          data.components.map((component, index) => (
             <Result
               key={index}
               index={index}
@@ -67,7 +72,7 @@ const FloatingComponents: React.FC<FloatingComponentsProps> = ({ animationKey })
           ))}
         {!isValidPrompt && (
           <form >
-            {result.questions.map((question) => (
+            {data.questions.map((question) => (
               <QuestionComponent
                 key={1} // Use question.id for unique key if available
                 question={question}
