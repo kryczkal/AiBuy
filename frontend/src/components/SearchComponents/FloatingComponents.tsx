@@ -1,22 +1,30 @@
 import React from 'react';
 
 import './Flotat-in.scss';
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box/Box';
+
+import { Result } from '../Result/Result';
 
 interface FloatingComponentsProps {
-  components: React.ReactNode[];
-  animationKey: number
+  results: Object[];
+  animationKey: number;
 }
 
-const FloatingComponents : React.FC<FloatingComponentsProps>= ({components, animationKey}) =>
-{
+const FloatingComponents: React.FC<FloatingComponentsProps> = ({ results, animationKey }) => {
   return (
-    <div className='blocks' key={animationKey}>
-      {components.map((component, index) => (
-        <div key={index} className="float-in">
-          {component}
-        </div>
-      ))}
-    </div>
+    <Box className={'results'}>
+      <Stack spacing={2}>
+        {results.map((component, index) => (
+          <Result
+            key={index}
+            index={index}
+            name={'SOLUTION'}
+            description={'description,description,description,description'}
+          />
+        ))}
+      </Stack>
+    </Box>
   );
 };
 
