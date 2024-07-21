@@ -1,7 +1,7 @@
 from app.services.llm_service import LLMService
 from app.models.product import Product, Products
 from typing import List, Dict
-from src.logger import global_loger
+from server.utilities.logger import global_loger
 import json
 
 MAX_NUMBER_OF_QUESTIONS = 5
@@ -25,7 +25,6 @@ class ProductService:
         # If we received only the prompt skip the concatenation part
         query = prompt if len(questions) == 0 else await self.llm_service.update_issue_details(prompt, questions,
                                                                                                answers)
-
         is_detailed = await self.llm_service.is_prompt_detailed_enough(query)
         if not is_detailed:
             questions = await self.llm_service.get_details_questions(query, MAX_NUMBER_OF_QUESTIONS)

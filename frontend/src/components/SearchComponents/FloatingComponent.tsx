@@ -8,7 +8,11 @@ interface FloatingComponentProps {
 }
 
 const FloatingComponent: React.FC<FloatingComponentProps> = ({ children, floatUp }) => {
-  return <div className={floatUp ? 'floating-up' : ''}>{children}</div>;
+  return (
+    <div style={{ maxWidth: '600px', marginBottom: '10rem' }} className={floatUp ? 'floating-up' : ''}>
+      {children}
+    </div>
+  );
 };
 
 export default FloatingComponent;
