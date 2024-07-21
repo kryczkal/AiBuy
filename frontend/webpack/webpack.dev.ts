@@ -7,6 +7,7 @@ module.exports = merge(config, {
   mode: 'development',
   devtool: 'source-map',
   devServer: {
+    allowedHosts: "all",
     port: 3000,
     historyApiFallback: true,
     open: true,
