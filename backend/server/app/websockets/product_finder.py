@@ -1,4 +1,3 @@
-
 from fastapi import APIRouter, WebSocket
 from app.services.product_service import ProductService
 
