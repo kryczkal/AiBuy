@@ -59,7 +59,7 @@ class LLMService:
             self.logger.debug(answer)
             i += 1
             if answer.isdigit():
-                return int(answer) >= 4
+                return int(answer) >= 2
         return False
 
     async def get_details_questions(self, prompt: str,  question_count: int) -> List[str]:
