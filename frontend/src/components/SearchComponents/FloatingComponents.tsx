@@ -9,40 +9,12 @@ import { ProcessQueryResult } from '../../models/ProcessQueryResult';
 
 interface FloatingComponentsProps {
   data: ProcessQueryResult | null;
-  questions: string[];
-  answers: string[];
   isValidPrompt: boolean;
+  processQuestion: (question: string, answer: string) => void;
 }
 
-const FloatingComponents: React.FC<FloatingComponentsProps> = ({ data, isValidPrompt }) => {
-  const mockResult: ProcessQueryResult = {
-    status: 'success',
-    questions: [
-      'What is your favorite color?',
-      'What is your preferred music genre?',
-      'What kind of activities do you enjoy?',
-    ],
-    components: [
-      {
-        itemName: 'Noise-Cancelling Headphones',
-        itemDesc: 'Immerse yourself in your favorite music or podcasts without distractions.',
-        itemImgUrl: 'https://example.com/headphones.jpg',
-      },
-      {
-        itemName: 'Smart Speaker',
-        itemDesc: 'Control your smart home devices, play music, and get answers with voice commands.',
-        itemImgUrl: 'https://example.com/speaker.jpg',
-      },
-      {
-        itemName: 'Fitness Tracker',
-        itemDesc: 'Track your steps, heart rate, and sleep patterns to stay active and healthy.',
-        itemImgUrl: 'https://example.com/tracker.jpg',
-      },
-    ],
-  };
+const FloatingComponents: React.FC<FloatingComponentsProps> = ({ data, isValidPrompt, processQuestion }) => {
   // Add more search results with different questions and items
-  const [result, setResults] = useState<ProcessQueryResult>(mockResult);
-  const [jsonData, setJsonData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   // temporary
   useEffect(() => {
@@ -50,15 +22,10 @@ const FloatingComponents: React.FC<FloatingComponentsProps> = ({ data, isValidPr
     return () => clearTimeout(timeout); // Cleanup function to prevent memory leaks
   }, []);
 
-  const handleQuestionSubmit = (question, answer) => {
-    const updatedJsonData = { ...jsonData };
-    updatedJsonData[question] = answer; // Use question as key
-    setJsonData(updatedJsonData);
-    console.log('JSON Data:', updatedJsonData); // Update and log the JSON object
-  };
   const handleAnswerSubmit = (question: string, answer: string) => {
     // setAnswers([...answers, answer]); // Update answers array with the submitted answer
     console.log('Submitted Answer:', answer, 'and questions:', question); // Optionally log the answer for debugging or further processing
+    processQuestion(question, answer);
   };
 
   if (data == null) return <></>;
