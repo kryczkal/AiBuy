@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import CenteredComponent from '../../components/SearchComponents/CenteredComponent';
 import FloatingComponent from '../../components/SearchComponents/FloatingComponent';
@@ -9,7 +9,6 @@ import SearchForm from 'src/components/SearchForm/SearchForm';
 import FloatingComponents from 'src/components/SearchComponents/FloatingComponents';
 import HeaderWrapper from 'src/components/HeaderWrapper/HeaderWrapper';
 
-
 const SearchPage: React.FC = () => {
   const [problem, setProblem] = useState('');
   const [questions, setQuestions] = useState([]);
@@ -19,24 +18,32 @@ const SearchPage: React.FC = () => {
   const [requestData, setRequestData] = useState<ProcessQueryResult | null>(null);
   const [questionCounter, setQuestionCounter] = useState(0);
 
+  useEffect(() => {
+    console.log('Question counter updated:', questionCounter);
+  }, [questionCounter]);
+
   const handleQuestionSubmit = (question, answer) => {
-    setQuestions(questions.concat(question));
-    setAnswers(answers.concat(answer));
+    setQuestions((prevQuestions) => prevQuestions.concat(question));
+    setAnswers((prevAnswers) => prevAnswers.concat(answer));
 
-    setQuestionCounter(questionCounter - 1);
-    console.log('Question counter:', questionCounter);
+    setQuestionCounter((prevCounter) => {
+      const newCounter = prevCounter - 1;
+      console.log('Question counter:', newCounter);
+      return newCounter;
+    });
 
-    if (questionCounter === 0) {
+    if (questionCounter === 1) { // Check if it's 1 before decrementing to 0
       ProcessQueryApiCallThrowable(problem, questions, answers)
         .then((data) => {
           console.log('Received data:', data);
           setRequestData(data);
           if (data.status === 'need_more_details') {
             setQuestionCounter(data.questions.length);
-            console.log('New question counter:', questionCounter);
+            console.log('New question counter:', data.questions.length);
           }
 
           setIsValidResponse(data.status === 'success');
+          setIsDisplayingComps(true);
         })
         .catch((error) => {
           console.error('Error processing query:', error);
@@ -58,7 +65,6 @@ const SearchPage: React.FC = () => {
         if (data.status === 'need_more_details') {
           setQuestionCounter(data.questions.length);
           console.log('New question counter array:', data.questions.length);
-          console.log('New question counter:', questionCounter);
         }
 
         setIsValidResponse(data.status === 'success');
