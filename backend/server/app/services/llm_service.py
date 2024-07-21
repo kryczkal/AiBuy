@@ -1,8 +1,10 @@
 import configparser
+import logging
 from typing import List
 
 from langchain.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
+from ..utilities.logger import log_init
 
 
 class LLMService:
@@ -19,6 +21,8 @@ class LLMService:
             api_key=api_key,
             model=model_name,
         )
+
+        self.logger = log_init(logging.DEBUG, "app\\utilities\\logs.log", "LLMservice")
 
     async def is_prompt_detailed_enough(self, prompt: str) -> bool:
         template = PromptTemplate(
@@ -44,17 +48,18 @@ class LLMService:
             answer = await chain.ainvoke({"prompt": prompt})
             answer = answer.content.strip()
 
+            self.logger.debug(answer)
             i += 1
             if answer.isdigit():
-                return int(answer.content) >= 4
+                return int(answer) >= 4
         return False
 
-    async def get_details_questions(self, prompt: str, level: int, question_count: int) -> List[str]:
+    async def get_details_questions(self, prompt: str,  question_count: int) -> List[str]:
         # Generate questions to get more details
         template = PromptTemplate(
             input_variables=["prompt"],
-            template=f"""Based on the user's initial description of their issue: {prompt} and description level {level}
-                                generate a set of {question_count} context-dependent questions to help them improve their description. The goal is to ensure the description is detailed and thorough enough for us to offer effective solutions or recommend suitable products. The questions should aim to elevate the description through five levels of detail, and the output should have each question separated by the '|' character.
+            template=f"""Based on the user's initial description of their issue: {prompt} 
+                                generate a set of up to {question_count} context-dependent questions to help them improve their description. The goal is to ensure the description is detailed and thorough enough for us to offer effective solutions or recommend suitable products. The questions should aim to elevate the description through five levels of detail, and the output should have each question separated by the '|' character.
 
                                 Your output should contain questions and nothing else than questions and '|' between them.
                                 IF YOU PUT ANY OTHER TEXT THAN QUESTIONS RELATED TO THE PROBLEM A KITTEN WILL DIE.
@@ -98,10 +103,16 @@ class LLMService:
 
         return final_questions
 
-    async def update_issue_details(self, question_answers: List[str]) -> str:
+    async def update_issue_details(self, base_prompt: str, questions: List[str], answers: List[str]) -> str:
         # Update the issue details based on answers
-        # This is a placeholder implementation
-        return " ".join(question_answers)
+        # no additional questions asked
+        if len(questions) == 0:
+            return base_prompt
+
+        updated_output = base_prompt + '\n'
+        for i in range(0, len(questions), 1):
+            updated_output = updated_output + questions[i] + ' ' + answers[i] + '\n'
+        return updated_output
 
     """async def get_solutions(self, prompt: str) -> str:
         # Generate solutions based on the prompt
