@@ -117,7 +117,7 @@ docker-build-image() {
     DOCKERFILE_PATH=$1
     DOCKERFILE_DIR=$(dirname $DOCKERFILE_PATH)
     BASE_NAME=$2
-    BUILDER_NAME=$BASE_NAME-builder
+    BUILDER_NAME=${BASE_NAME}-builder
 
     create_separator
     echo -e "Building and testing Docker image $GREEN $BASE_NAME $RESET..."
@@ -128,30 +128,30 @@ docker-build-image() {
     create_separator
 
     # Create a builder instance if it doesn't already exist
-    if ! sudo docker buildx ls | grep -q $BUILDER_NAME; then
-    sudo docker buildx create --name $BUILDER_NAME --use
-    create_separator
+    if ! sudo docker buildx ls | grep -q ${BUILDER_NAME}; then
+        sudo docker buildx create --name ${BUILDER_NAME} --use
+        create_separator
     fi
 
     # Ensure the builder is ready
-    sudo docker buildx inspect $BUILDER_NAME --bootstrap
+    sudo docker buildx inspect ${BUILDER_NAME} --bootstrap
 
     create_separator
     # Build the Docker image with Buildx
     echo "Building Docker image..."
-    sudo docker buildx build -t $BASE_NAME:latest $DOCKERFILE_DIR --load
+    sudo docker buildx build -t "${BASE_NAME}:latest" "${DOCKERFILE_DIR}" --load
     create_separator
     echo -e "The Docker image $BASE_NAME has been ${GREEN}built successfully. $RESET"
     echo -e "${YELLOW}To run the Docker image, execute the following command: $RESET"
     echo -e ""
-    echo -e "docker run $BASE_NAME:latest"
+    echo -e "docker run ${BASE_NAME}:latest"
     echo -e "-d to run detach and run in background"
     echo -e "-p <host_port>:<container_port> to map ports"
     echo -e "additonal flags as needed"
     echo -e ""
     echo -e "${YELLOW}You can also push the image to a registry using the following command: $RESET"
     echo -e ""
-    echo -e "docker push $BASE_NAME <registry>"
+    echo -e "docker push ${BASE_NAME} <registry>"
     echo -e ""
     echo -e "The registry can be Docker Hub, AWS ECR, Google Container Registry, etc."
     create_separator

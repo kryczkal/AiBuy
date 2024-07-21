@@ -180,7 +180,7 @@ class LLMService:
     async def do_perplexity_research(self, name: str, description: str, questions: List[str], answers: List[str]) -> str:
 
         base_prompt = """PLACEHOLDER FOR PROMPT""" # TODO: do this
-        system_prompt = """TBe precise and concise."""
+        system_prompt = """You will get Product and """
         
 
         messages = [
@@ -219,5 +219,68 @@ class LLMService:
         response = requests.post(self.perplexity_url, json=payload, headers=headers)
 
         return json.loads(response.text)["choices"][0]["message"]["content"]
+    
+    async def do_perplexity_research(self, name: str, description: str, questions: List[str], answers: List[str]) -> str:
+        base_prompt = f"""
+        Given the following product information:
+        Name: {name}
+        Description: {description}
+
+        Respond with a JSON array of objects, where each object represents a product and follows this format:
+        [ 
+        {{
+            "name": "name of product",
+            "description": "description of product",
+            "price": "price",
+            "amazon_link": "amazon_link"
+        }},
+        {{
+            "name": "name of product",
+            "description": "description of product",
+            "price": "price",
+            "amazon_link": "amazon_link"
+        }}
+        // add more objects as needed
+        ]
+        """
+        system_prompt = """You are an AI assistant that provides product research details in JSON format."""
+
+        messages = [
+            {
+                "role": "system",
+                "content": system_prompt
+            },
+            {
+                "role": "user",
+                "content": base_prompt
+            }
+        ]
+
+        for i in range(len(questions)):
+            assistant = {
+                "role": "assistant",
+                "content": questions[i]
+            }
+            user = {
+                "role": "user",
+                "content": answers[i]
+            }
+            messages.append(assistant)
+            messages.append(user)
+
+        payload = {
+            "model": "llama-3-sonar-small-32k-online",
+            "messages": messages
+        }
+        headers = {
+            "accept": "application/json",
+            "content-type": "application/json",
+            "authorization": f"Bearer {os.environ['PERPLEXITY_KEY']}"
+        }
+
+        response = requests.post(self.perplexity_url, json=payload, headers=headers)
+        
+        return json.loads(response.text)["choices"][0]["message"]["content"]
+
 
       

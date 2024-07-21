@@ -1,0 +1,31 @@
+curl -X POST "http://127.0.0.1:8000/do-research" \
+-H "Content-Type: application/json" \
+-d '{
+  "name": "Fan",
+  "description": "i wanna find Fan becase in my apartment is hot, i have 200 dolars for it",
+  "questions": [
+    
+  ],
+  "answers": [
+   
+  ]
+}'
+
+
+python -m uvicorn app.main:app --reload
+
+
+[
+    {
+        "name": "Air King 9166F 20\" Whole House Window Fan",
+        "description": "A whole house window fan that can help cool down your apartment. It's perfect for hot summer days.",
+        "price": "100-200",
+        "amazon_link": "https://www.amazon.com/Household-Window-Fans-100-200/s?c=ts&rh=n%3A3737641%2Cp_36%3A1253526011&ts_id=3737641"
+    },
+    {
+        "name": "iLiving 10\" Shutter Exhaust Fan with Wireless Smart Remote Controlled Thermostat and Humidity, Variable",
+        "description": "A compact exhaust fan that can help regulate the temperature and humidity in your apartment.",
+        "price": "100-200",
+        "amazon_link": "https://www.amazon.com/Household-Window-Fans-100-200/s?c=ts&rh=n%3A3737641%2Cp_36%3A1253526011&ts_id=3737641"
+    }
+]
