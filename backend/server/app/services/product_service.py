@@ -28,10 +28,10 @@ class ProductService:
         is_detailed = await self.llm_service.is_prompt_detailed_enough(query)
         if not is_detailed:
             questions = await self.llm_service.get_details_questions(query, MAX_NUMBER_OF_QUESTIONS)
-            response = {"status": "need_more_details", "questions": questions}
+            response = {"status": "need_more_details", "questions": questions, "components": []}
         else:
             components = await self.llm_service.get_components()
-            response = {"status": "success", "components": components}
+            response = {"status": "success", "components": components, "questions": []}
 
         global_loger.info(f"Sending response: {json.dumps(response)}")
         return response
