@@ -1,32 +1,27 @@
+"""
 from fastapi import APIRouter, WebSocket
 from app.services.product_service import ProductService
-import uuid
+from .connection_manager import ConnectionManager
 
 router = APIRouter()
-
-# Store active connections
-active_connections = {}
+manager = ConnectionManager()
 
 @router.websocket("/ws/product-finder")
 async def product_finder_websocket(websocket: WebSocket):
-    # TODO: TEMP
-    return
-    # await websocket.accept()
-    # session_id = str(uuid.uuid4())
-    # active_connections[session_id] = websocket
-    # product_service = ProductService()
-    #
-    # try:
-    #     while True:
-    #         data = await websocket.receive_json()
-    #         consumer_need = data.get('query')
-    #         if consumer_need:
-    #             product = await product_service.find_product(consumer_need)
-    #             await websocket.send_json({"session_id": session_id, "product": product.dict()})
-    #         else:
-    #             await websocket.send_json({"error": "Invalid request format"})
-    # except Exception as e:
-    #     print(f"WebSocket error: {e}")
-    # finally:
-    #     del active_connections[session_id]
-    #     await websocket.close()
+    session_id = await manager.connect(websocket)
+    product_service = ProductService()
+
+    try:
+        while True:
+            data = await websocket.receive_json()
+            consumer_need = data.get('query')
+            if consumer_need:
+                product = await product_service.find_product(consumer_need)
+                await manager.send_personal_message({"session_id": session_id, "product": product.dict()}, session_id)
+            else:
+                await manager.send_personal_message({"error": "Invalid request format"}, session_id)
+    except Exception as e:
+        print(f"WebSocket error: {e}")
+    finally:
+        manager.disconnect(session_id)
+"""

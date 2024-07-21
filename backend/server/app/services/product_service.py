@@ -1,7 +1,7 @@
 from app.services.llm_service import LLMService
 from app.models.product import Product
 from typing import List, Dict
-from server.src.logger import global_loger
+from src.logger import global_loger
 import json
 
 
@@ -35,3 +35,17 @@ class ProductService:
 
         global_loger.info(f"Sending response: {json.dumps(response)}")
         return response
+
+    async def find_product(self, consumer_need: str) -> Product:
+        # TODO: in future reconsider complex response as in process_query in case of details page done
+
+        # Get product recommendation from LLM
+        # product_info = await self.llm_service.get_solutions(consumer_need)
+
+        # TODO: replace
+        return Product(
+            name="Recommended Product",
+            description="Srogi produkt",
+            price=99.99,
+            amazon_link="https://www.amazon.com/sample-product"
+        )
