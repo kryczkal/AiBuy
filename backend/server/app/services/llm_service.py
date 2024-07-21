@@ -241,7 +241,7 @@ class LLMService:
         }
 
         response = requests.post(self.perplexity_url, json=payload, headers=headers)
-        
+    
         return json.loads(response.text)["choices"][0]["message"]["content"]
 
 
