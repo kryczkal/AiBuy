@@ -7,24 +7,10 @@ import SearchForm from 'src/components/SearchForm/SearchForm';
 import FloatingComponents from 'src/components/SearchComponents/FloatingComponents';
 import HeaderWrapper from 'src/components/HeaderWrapper/HeaderWrapper';
 
-const mockResults = [
-  new Object(),
-  new Object(),
-  new Object(),
-  new Object(),
-  new Object(),
-  new Object(),
-  new Object(),
-  new Object(),
-  new Object(),
-  new Object(),
-  new Object(),
-  new Object(),
-];
+
 
 const SearchPage: React.FC = () => {
   const [problem, setProblem] = useState('');
-  const [results, setResults] = useState<Object[]>(mockResults);
   const [isDisplayingComps, setIsDisplayingComps] = useState(false);
   const [animationKey, setAnimationKey] = useState(0);
 
@@ -44,7 +30,7 @@ const SearchPage: React.FC = () => {
           description="Describe what you need, and we'll find the perfect solution"
         />
         <SearchForm problem={problem} onProblemChange={(e) => setProblem(e.target.value)} onSubmit={handleSubmit} />
-        {isDisplayingComps && <FloatingComponents results={results} animationKey={animationKey} />}
+        {isDisplayingComps && <FloatingComponents animationKey={animationKey} />}
       </FloatingComponent>
     </CenteredComponent>
   );

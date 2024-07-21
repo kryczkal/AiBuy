@@ -3,11 +3,13 @@ import './QuestionComponent.scss';
 
 interface QuestionComponentProps {
   question: string;
-  onAnswerChange: (answer: string) => void; // callback to pass answer to the parent
+  onAnswerChange: (answer: string) => void;
+  onAnswerSubmit: (question: string, answer: string) => void;
 }
 
-const QuestionComponent: React.FC<QuestionComponentProps> = ({ question, onAnswerChange }) => {
+const QuestionComponent: React.FC<QuestionComponentProps> = ({ question, onAnswerChange, onAnswerSubmit }) => {
   const [answer, setAnswer] = useState('');
+  const [visibility, setVisibility] = useState(true);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newAnswer = event.target.value;
@@ -15,18 +17,31 @@ const QuestionComponent: React.FC<QuestionComponentProps> = ({ question, onAnswe
     onAnswerChange(newAnswer);
   };
 
-  return (
-    <div className="question-container">
+  const handleSubmit = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      if (answer) {
+        onAnswerSubmit(question, answer);
+        setVisibility(false);
+      }
+    }
+  };
+
+  return visibility ? (
+    <article className="question-container">
       <p className="question">{question}</p>
       <input
         className="answer-input"
         type="text"
         value={answer}
+        id={question}
         onChange={handleInputChange}
         placeholder="Type your answer here..."
+        required
+        onKeyDown={handleSubmit}
       />
-    </div>
-  );
+    </article>
+  ) : null;
 };
 
 export default QuestionComponent;
