@@ -24,7 +24,6 @@ class ProductService:
         # If we received only the prompt skip the concatenation part
         query = prompt if len(questions) == 0 else await self.llm_service.update_issue_details(prompt, questions,
                                                                                                answers)
-
         is_detailed = await self.llm_service.is_prompt_detailed_enough(query)
         if not is_detailed:
             questions = await self.llm_service.get_details_questions(query)
@@ -35,3 +34,20 @@ class ProductService:
 
         global_loger.info(f"Sending response: {json.dumps(response)}")
         return response
+
+    async def find_product(self, consumer_need: str) -> Product:
+        # TODO: in future reconsider complex response as in process_query in case of details page done
+
+        # Get product recommendation from LLM
+        # product_info = await self.llm_service.get_solutions(consumer_need)
+
+        global_loger.info(f"Sending response: {json.dumps(response)}")
+        return response
+
+        # TODO: replace
+        return Product(
+            name="Recommended Product",
+            description="Srogi produkt",
+            price=99.99,
+            amazon_link="https://www.amazon.com/sample-product"
+        )

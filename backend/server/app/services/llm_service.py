@@ -1,15 +1,21 @@
 from typing import List
 import configparser
 from together import Together
-
+import requests
+from dotenv import load_dotenv
+import json
+import os
 
 class LLMService:
     def __init__(self, config_file_path):
         # Initialize LLaMA model here
         # Reading config file
+        load_dotenv(override=True)
         self.cnf = configparser.ConfigParser()
         self.cnf.read(config_file_path)
         api_key = self.cnf['llama']['api_key']
+        self.perplexity_url = "https://api.perplexity.ai/chat/completions"
+
 
         # Initializing connection
         self.client = Together(api_key=api_key)
@@ -19,7 +25,7 @@ class LLMService:
         # This is a placeholder implementation
         return len(prompt.split()) > 20
 
-    async def get_details_questions(self, question: str) -> List[str]:
+    async def get_details_questions(self, prompt: str) -> List[str]:
         # Generate questions to get more details
         # This is a placeholder implementation
         return [
@@ -51,4 +57,46 @@ class LLMService:
             {"name": "Component1", "description": "Description of Component1"},
             {"name": "Component2", "description": "Description of Component2"},
         ]
+
+    # TODO: Make sure this is correct
+    async def do_perplexity_research(self, base_prompt: str, question_answer_list: List[dict]) -> str:
+
+        messages = [
+                {
+                    "role": "system",
+                    "content": "Be precise and concise."
+                },
+                {
+                    "role": "user",
+                    "content": base_prompt
+                }
+            ]
+
+        for item in question_answer_list:
+            assistant = {
+                    "role": "assistant",
+                    "content": item.get("question")
+                }
+            user = {
+                    "role": "user",
+                    "content": item.get("answer")
+                }
+            messages.append(assistant)
+            messages.append(user)
+
+        payload = {
+            "model": "llama-3-sonar-small-32k-online",
+            "messages": messages
+        }
+        headers = {
+            "accept": "application/json",
+            "content-type": "application/json",
+            "authorization": f"Bearer {os.environ['PERPLEXITY_KEY']}"
+        }
+
+        response = requests.post(self.perplexity_url, json=payload, headers=headers)
+
+        return json.loads(response.text)["choices"][0]["message"]["content"]
+
+
 

@@ -15,7 +15,7 @@ app.add_middleware(
 )
 
 app.include_router(product.router)
-app.include_router(product_finder.router)
+# app.include_router(product_finder.router)
 
 @app.get("/")
 async def root():
