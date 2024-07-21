@@ -18,51 +18,21 @@ const SearchPage: React.FC = () => {
   const [requestData, setRequestData] = useState<ProcessQueryResult | null>(null);
   const [questionCounter, setQuestionCounter] = useState(0);
 
+  // Effect to handle API calls when questionCounter reaches 1
   useEffect(() => {
-    console.log('Question counter updated:', questionCounter);
-  }, [questionCounter]);
-
-  const handleQuestionSubmit = (question, answer) => {
-    setQuestions((prevQuestions) => prevQuestions.concat(question));
-    setAnswers((prevAnswers) => prevAnswers.concat(answer));
-
-    setQuestionCounter((prevCounter) => {
-      const newCounter = prevCounter - 1;
-      console.log('Question counter:', newCounter);
-      return newCounter;
-    });
-
-    if (questionCounter === 1) { // Check if it's 1 before decrementing to 0
+    if (questionCounter === 1) {
+      setIsLoading(true);
       ProcessQueryApiCallThrowable(problem, questions, answers)
         .then((data) => {
           console.log('Received data:', data);
           setRequestData(data);
+          setAnswers([]); // Clear answers after request
+          setQuestions([]); // Clear questions after request
+          setIsValidResponse(data.status === 'success');
           if (data.status === 'need_more_details') {
             setQuestionCounter(data.questions.length);
             console.log('New question counter:', data.questions.length);
           }
-
-          setIsValidResponse(data.status === 'success');
-        })
-        .catch((error) => {
-          console.error('Error processing query:', error);
-        });
-    }
-  };
-
-  useEffect(() => {
-    if (isLoading) {
-      ProcessQueryApiCallThrowable(problem, questions, answers)
-        .then((data) => {
-          console.log('Received data:', data);
-          setRequestData(data);
-            setAnswers([]);
-            setQuestions([]);
-            setIsValidResponse(data.status === 'success');
-            if (data.status === 'need_more_details') {
-                setQuestionCounter(data.questions.length);
-                console.log('New question counter array:', data.questions.length);
-            }
         })
         .catch((error) => {
           console.error('Error processing query:', error);
@@ -71,7 +41,14 @@ const SearchPage: React.FC = () => {
           setIsLoading(false);
         });
     }
-  }, [answers, isLoading, problem, questions]);
+  }, [questionCounter, problem, questions, answers]); // Dependencies array
+
+  const handleQuestionSubmit = (question: string, answer: string) => {
+    setQuestions((prevQuestions) => prevQuestions.concat(question));
+    setAnswers((prevAnswers) => prevAnswers.concat(answer));
+
+    setQuestionCounter((prevCounter) => prevCounter - 1);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,6 +58,7 @@ const SearchPage: React.FC = () => {
     setAnswers([]);
     setRequestData(null); // Clear previous request data
     setIsLoading(true);
+    setQuestionCounter(1); // Initialize questionCounter to trigger API call
   };
 
   return (

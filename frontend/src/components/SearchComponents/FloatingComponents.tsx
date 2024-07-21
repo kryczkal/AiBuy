@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './Flotat-in.scss';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box/Box';
@@ -21,6 +21,7 @@ const FloatingComponents: React.FC<FloatingComponentsProps> = ({ data, isValidPr
     console.log('Submitted Answer:', answer, 'and questions:', question); // Optionally log the answer for debugging or further processing
     processQuestion(question, answer);
   };
+
 
   if (!data && !isLoading) return <></>;
 
