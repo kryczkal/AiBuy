@@ -20,14 +20,12 @@ const SearchPage: React.FC = () => {
 
   // Effect to handle API calls when questionCounter reaches 1
   useEffect(() => {
-    if (questionCounter === 1) {
+    if (questionCounter === 0) {
       setIsLoading(true);
       ProcessQueryApiCallThrowable(problem, questions, answers)
         .then((data) => {
           console.log('Received data:', data);
           setRequestData(data);
-          setAnswers([]); // Clear answers after request
-          setQuestions([]); // Clear questions after request
           setIsValidResponse(data.status === 'success');
           if (data.status === 'need_more_details') {
             setQuestionCounter(data.questions.length);

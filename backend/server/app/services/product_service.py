@@ -6,6 +6,7 @@ import json
 import re
 
 MAX_NUMBER_OF_SOLUTIONS = 3
+MAX_NUMBER_OF_QUESTIONS = 5
 
 class ProductService:
     def __init__(self, config_path: str):
@@ -33,7 +34,7 @@ class ProductService:
             questions = await self.llm_service.get_details_questions(query, MAX_NUMBER_OF_QUESTIONS)
             response = {"status": "need_more_details", "questions": questions, "components": []}
         else:
-            components = await self.llm_service.get_components(query, MAX_NUMBER_O`F_SOLUTIONS)
+            components = await self.llm_service.get_components(query, MAX_NUMBER_OF_SOLUTIONS)
             global_loger.debug(str(components))
             response = {"status": "success", "components": components, "questions": []}
 
