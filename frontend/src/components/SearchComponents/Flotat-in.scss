@@ -38,7 +38,12 @@
     -moz-box-shadow: -12px 19px 23px -28px rgba(66, 68, 90, 1);
     box-shadow: -12px 19px 23px -28px rgba(66, 68, 90, 1);
     background-color: #47454512;
-    //border: .0002px solid rgba(0, 0, 0, 0.23);;
+    //border: .0002px solid rgba(0, 0, 0, 0.23);
+    &:hover{
+      background-color: rgba(224, 246, 79, 0.1);
+
+    }
+
   }
 
 }
